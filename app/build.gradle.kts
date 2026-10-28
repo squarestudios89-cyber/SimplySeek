@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
+    // Navigation Compose
+    implementation(libs.androidx.navigation.compose)
+
     // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
