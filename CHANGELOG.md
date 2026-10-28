@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.8.0] - 2026-03-31
+
+### Added
+- **Google AdMob Integration**:
+  - Integrated `com.google.android.gms:play-services-ads:23.6.0`.
+  - Added [`SimplySeekApplication.kt`](app/src/main/java/com/squarestudios/simplyseek/SimplySeekApplication.kt) initializing `MobileAds.initialize(this)`.
+  - Created [`AdMobBanner.kt`](app/src/main/java/com/squarestudios/simplyseek/ads/AdMobBanner.kt) wrapping `AndroidView` and `AdView` for banner ads at the bottom of the screen.
+  - Implemented [`InterstitialAdManager.kt`](app/src/main/java/com/squarestudios/simplyseek/ads/InterstitialAdManager.kt) to preload and present full-screen interstitial ads upon puzzle completion.
+  - Added AdMob Application ID metadata and permissions to [`AndroidManifest.xml`](app/src/main/AndroidManifest.xml).
+
+---
+
 ## [0.7.0] - 2026-03-31
 
 ### Added
@@ -39,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Integrated `onDragEnd` matching logic inside `InteractiveWordSearchGrid`.
   - Added permanent neon green highlights (`Color(0x9900E676)`) on Canvas overlay for all discovered `FoundWord` objects.
   - Automatically clears temporary drag selection lines upon release if no match is found.
-- **Selection Manager Unit Tests** in [`WordSearchSelectionManagerTest.kt`](app/src.test/java/com/squarestudios/simplyseek/logic/WordSearchSelectionManagerTest.kt):
+- **Selection Manager Unit Tests** in [`WordSearchSelectionManagerTest.kt`](app/src/test/java/com/squarestudios/simplyseek/logic/WordSearchSelectionManagerTest.kt):
   - Verified forward, reverse, and diagonal word extraction and matching accuracy.
 
 ---

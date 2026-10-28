@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.squarestudios.simplyseek.ads.AdMobBanner
 import com.squarestudios.simplyseek.generator.WordSearchGenerator
 import com.squarestudios.simplyseek.model.FoundWord
 import com.squarestudios.simplyseek.ui.components.InteractiveWordSearchGrid
@@ -60,51 +61,54 @@ fun GameBoardScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(TechDarkBackground)
-            .padding(16.dp),
+            .background(TechDarkBackground),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        // Header Info
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = category.uppercase(),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Monospace,
-                color = TechButtonNeon,
-            )
-
-            Text(
-                text = "[$difficulty]",
-                fontSize = 16.sp,
-                color = TechTextCyan,
-            )
-        }
-
-        // Interactive Word Search Grid
-        InteractiveWordSearchGrid(
-            grid = grid,
-            targetWords = sampleWords,
-            foundWords = foundWords,
-            onWordFound = { newFound ->
-                if (!foundWords.contains(newFound)) {
-                    foundWords.add(newFound)
-                }
-            },
-        )
-
-        // Found Progress Footer
         Column(
-            modifier = Modifier.padding(bottom = 24.dp),
+            modifier = Modifier.padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            // Header Info
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = category.uppercase(),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace,
+                    color = TechButtonNeon,
+                )
+
+                Text(
+                    text = "[$difficulty]",
+                    fontSize = 16.sp,
+                    color = TechTextCyan,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Interactive Word Search Grid
+            InteractiveWordSearchGrid(
+                grid = grid,
+                targetWords = sampleWords,
+                foundWords = foundWords,
+                onWordFound = { newFound ->
+                    if (!foundWords.contains(newFound)) {
+                        foundWords.add(newFound)
+                    }
+                },
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Found Progress
             Text(
                 text = "FOUND: ${foundWords.size} / ${sampleWords.size}",
                 fontSize = 18.sp,
@@ -112,7 +116,7 @@ fun GameBoardScreen(
                 color = TechButtonNeon,
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = "Target Words: " + sampleWords.joinToString(", "),
@@ -120,6 +124,9 @@ fun GameBoardScreen(
                 color = TechTextCyan.copy(alpha = 0.8f),
             )
         }
+
+        // Bottom AdMob Banner
+        AdMobBanner()
     }
 }
 

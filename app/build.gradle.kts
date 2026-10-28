@@ -55,6 +55,9 @@ dependencies {
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)
 
+    // Google AdMob SDK
+    implementation(libs.play.services.ads)
+
     // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
