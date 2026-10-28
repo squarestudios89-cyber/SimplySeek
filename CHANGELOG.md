@@ -10,8 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Word selection touch/drag handling and target word cross-off logic.
-- UI layer (Jetpack Compose / View UI) for interactive word search rendering.
+- Touch selection & drag gesture handling across grid cells.
+- Target word cross-off checklist & game win animations.
+
+---
+
+## [0.4.0] - 2026-03-31
+
+### Added
+- **Jetpack Compose Word Search Grid UI** in [`WordSearchGrid.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt):
+  - Added `@Composable fun WordSearchGrid` to render a 2D list of `Cell` objects.
+  - Implemented dark "tech fluid" aesthetic with dark obsidian background, cyan monospace typography, and neon gradient container borders.
+  - Rendered square cell tiles (`CellTile`) with configurable dimensions (default `40.dp`).
+  - Created Compose Preview `@Composable fun WordSearchGridPreview()`.
 
 ---
 
