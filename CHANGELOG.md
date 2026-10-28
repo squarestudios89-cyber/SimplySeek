@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.10.0] - 2026-03-31
+
+### Added
+- **Firebase Firestore Global Leaderboards**:
+  - Integrated `com.google.firebase:firebase-firestore-ktx` via Firebase BoM (`33.10.0`).
+  - Created [`LeaderboardEntry.kt`](app/src/main/java/com/squarestudios/simplyseek/leaderboard/LeaderboardEntry.kt) data model storing `playerName`, `timeInSeconds`, `difficulty`, and `timestamp`.
+  - Created [`LeaderboardRepository.kt`](app/src/main/java/com/squarestudios/simplyseek/leaderboard/LeaderboardRepository.kt):
+    - `submitScore(...)`: Pushes player completion time and difficulty to the `"leaderboards"` collection.
+    - `getTopScoresFlow(...)`: Returns a real-time Kotlin `Flow` querying the top 50 fastest times ordered by lowest time first for a given difficulty.
+
+---
+
 ## [0.9.0] - 2026-03-31
 
 ### Added

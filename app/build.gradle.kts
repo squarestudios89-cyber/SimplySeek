@@ -61,6 +61,10 @@ dependencies {
     // Google Play Billing Library
     implementation(libs.billing.ktx)
 
+    // Firebase Firestore
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore.ktx)
+
     // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
