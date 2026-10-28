@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.10.0] - 2026-03-31
+## [0.10.0] - 2026-10-28
 
 ### Added
 - **Firebase Firestore Global Leaderboards**:
@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.9.0] - 2026-03-31
+## [0.9.0] - 2026-10-28
 
 ### Added
 - **Google Play Billing Integration**:
@@ -38,19 +38,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.8.0] - 2026-03-31
+## [0.8.0] - 2026-10-28
 
 ### Added
 - **Google AdMob Integration**:
   - Integrated `com.google.android.gms:play-services-ads:23.6.0`.
   - Added [`SimplySeekApplication.kt`](app/src/main/java/com/squarestudios/simplyseek/SimplySeekApplication.kt) initializing `MobileAds.initialize(this)`.
-  - Created [`AdMobBanner.kt`](app/src/main/java/com/squarestudios/simplyseek/ads/AdMobBanner.kt) wrapping `AndroidView` and `AdView` for banner ads at the bottom of the screen.
+  - Created [`AdMobBanner.kt`](app/src.main/java/com/squarestudios/simplyseek/ads/AdMobBanner.kt) wrapping `AndroidView` and `AdView` for banner ads at the bottom of the screen.
   - Implemented [`InterstitialAdManager.kt`](app/src/main/java/com/squarestudios/simplyseek/ads/InterstitialAdManager.kt) to preload and present full-screen interstitial ads upon puzzle completion.
   - Added AdMob Application ID metadata and permissions to [`AndroidManifest.xml`](app/src/main/AndroidManifest.xml).
 
 ---
 
-## [0.7.0] - 2026-03-31
+## [0.7.0] - 2026-10-28
 
 ### Added
 - **Jetpack Compose Navigation System**:
@@ -58,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Defined routes in [`Screen.kt`](app/src/main/java/com/squarestudios/simplyseek/navigation/Screen.kt): `Home`, `CategorySelect`, `GameBoard`, `Stats`.
   - Implemented navigation argument passing (`category` and `difficulty`) from `CategorySelect` to `GameBoard`.
   - Built dark "tech fluid" UI screens:
-    - [`HomeScreen.kt`](app/src.main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt): Welcome screen & menu.
+    - [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt): Welcome screen & menu.
     - [`CategorySelectScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/CategorySelectScreen.kt): Category & difficulty selector.
     - [`GameBoardScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/GameBoardScreen.kt): Interactive Word Search game screen with live word progress.
     - [`StatsScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/StatsScreen.kt): Player statistics & streak display.
@@ -66,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.6.0] - 2026-03-31
+## [0.6.0] - 2026-10-28
 
 ### Added
 - **Selection Matching & Permanent Highlight System**:
@@ -79,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.5.0] - 2026-03-31
+## [0.5.0] - 2026-10-28
 
 ### Added
 - **Swipe-to-Select Canvas Overlay** in [`WordSearchGrid.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt):
@@ -92,10 +92,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.4.0] - 2026-03-31
+## [0.4.0] - 2026-10-28
 
 ### Added
-- **Jetpack Compose Word Search Grid UI** in [`WordSearchGrid.kt`](app/src.main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt):
+- **Jetpack Compose Word Search Grid UI** in [`WordSearchGrid.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt):
   - Added `@Composable fun WordSearchGrid` to render a 2D list of `Cell` objects.
   - Implemented dark "tech fluid" aesthetic with dark obsidian background, cyan monospace typography, and neon gradient container borders.
   - Rendered square cell tiles (`CellTile`) with configurable dimensions (default `40.dp`).
@@ -103,10 +103,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.3.0] - 2026-03-31
+## [0.3.0] - 2026-10-28
 
 ### Added
-- **Room Database Integration** in [`com.squarestudios.simplyseek.db`](app/src.main/java/com/squarestudios/simplyseek/db/AppDatabase.kt):
+- **Room Database Integration** in [`com.squarestudios.simplyseek.db`](app/src/main/java/com/squarestudios/simplyseek/db/AppDatabase.kt):
   - `SavedGame` Entity: Persists serialized 2D grid (`List<List<Cell>>`), target words (`List<String>`), elapsed time, and difficulty level.
   - `UserStats` Entity: Tracks total XP, total puzzles completed, and current daily streak.
   - `SavedGameDao` & `UserStatsDao`: Standard DAOs providing reactive `Flow` and coroutine `suspend` methods for insert, update, read, and delete operations.
@@ -116,7 +116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.2.0] - 2026-03-31
+## [0.2.0] - 2026-10-28
 
 ### Added
 - **Procedural Word Search Generator** in [`WordSearchGenerator.kt`](app/src/main/java/com/squarestudios/simplyseek/generator/WordSearchGenerator.kt):
@@ -124,17 +124,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Handles character overlaps when intersecting words share identical letters.
   - Fills remaining empty spaces with random uppercase letters ('A'..'Z').
   - Returns populated 2D `List<List<Cell>>` array and `GridState`.
-- **Generator Unit Tests** in [`WordSearchGeneratorTest.kt`](app/src.test/java/com/squarestudios/simplyseek/generator/WordSearchGeneratorTest.kt):
+- **Generator Unit Tests** in [`WordSearchGeneratorTest.kt`](app/src/test/java/com/squarestudios/simplyseek/generator/WordSearchGeneratorTest.kt):
   - Verified 10x10 and custom grid size generation, letter bounds, and searchability of placed words.
 
 ---
 
-## [0.1.0] - 2026-03-31
+## [0.1.0] - 2026-10-28
 
 ### Added
-- **Core Data Models** in [`com.squarestudios.simplyseek.model`](app/src/main/java/com/squarestudios/simplyseek/model/WordSearchModels.kt):
+- **Core Data Models** in [`com.squarestudios.simplyseek.model`](app/src.main/java/com/squarestudios/simplyseek/model/WordSearchModels.kt):
   - `Cell`: Represents a character at a specific row and column (`char: Char`, `rowIndex: Int`, `colIndex: Int`).
   - `FoundWord`: Tracks a found word on the grid (`word: String`, `startCell: Cell`, `endCell: Cell`).
   - `GridState`: Holds the 2D grid (`List<List<Cell>>`), target words (`List<String>`), and discovered words (`List<FoundWord>`).
-- **Unit Tests** in [`com.squarestudios.simplyseek.model.WordSearchModelsTest`](app/src.test/java/com/squarestudios/simplyseek/model/WordSearchModelsTest.kt) verifying creation and state integrity of all core data models.
+- **Unit Tests** in [`com.squarestudios.simplyseek.model.WordSearchModelsTest`](app/src/test/java/com/squarestudios/simplyseek/model/WordSearchModelsTest.kt) verifying creation and state integrity of all core data models.
 - **Changelog**: Initialized `CHANGELOG.md` for project version tracking.
