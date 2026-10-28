@@ -58,6 +58,9 @@ dependencies {
     // Google AdMob SDK
     implementation(libs.play.services.ads)
 
+    // Google Play Billing Library
+    implementation(libs.billing.ktx)
+
     // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)

@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.0] - 2026-03-31
+
+### Added
+- **Google Play Billing Integration**:
+  - Added `com.android.billingclient:billing-ktx:7.1.1` dependency.
+  - Implemented [`BillingManager.kt`](app/src/main/java/com/squarestudios/simplyseek/billing/BillingManager.kt) to manage the `premium_remove_ads` one-time in-app purchase.
+  - Handles `BillingClient` setup, connection lifecycle, querying product details, launching purchase flows, and acknowledging purchases.
+  - Exposes reactive `isRemoveAdsPurchased: StateFlow<Boolean>` state to dynamically show or hide AdMob banners across the app.
+
+---
+
 ## [0.8.0] - 2026-03-31
 
 ### Added
@@ -35,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Defined routes in [`Screen.kt`](app/src/main/java/com/squarestudios/simplyseek/navigation/Screen.kt): `Home`, `CategorySelect`, `GameBoard`, `Stats`.
   - Implemented navigation argument passing (`category` and `difficulty`) from `CategorySelect` to `GameBoard`.
   - Built dark "tech fluid" UI screens:
-    - [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt): Welcome screen & menu.
+    - [`HomeScreen.kt`](app/src.main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt): Welcome screen & menu.
     - [`CategorySelectScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/CategorySelectScreen.kt): Category & difficulty selector.
     - [`GameBoardScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/GameBoardScreen.kt): Interactive Word Search game screen with live word progress.
     - [`StatsScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/StatsScreen.kt): Player statistics & streak display.
@@ -83,7 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.0] - 2026-03-31
 
 ### Added
-- **Room Database Integration** in [`com.squarestudios.simplyseek.db`](app/src/main/java/com/squarestudios/simplyseek/db/AppDatabase.kt):
+- **Room Database Integration** in [`com.squarestudios.simplyseek.db`](app/src.main/java/com/squarestudios/simplyseek/db/AppDatabase.kt):
   - `SavedGame` Entity: Persists serialized 2D grid (`List<List<Cell>>`), target words (`List<String>`), elapsed time, and difficulty level.
   - `UserStats` Entity: Tracks total XP, total puzzles completed, and current daily streak.
   - `SavedGameDao` & `UserStatsDao`: Standard DAOs providing reactive `Flow` and coroutine `suspend` methods for insert, update, read, and delete operations.
