@@ -10,8 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Touch selection & drag gesture handling across grid cells.
 - Target word cross-off checklist & game win animations.
+- Sound effects, haptics, and game state save/load integration.
+
+---
+
+## [0.5.0] - 2026-03-31
+
+### Added
+- **Swipe-to-Select Canvas Overlay** in [`WordSearchGrid.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt):
+  - Created `@Composable fun InteractiveWordSearchGrid` overlaying a Jetpack Compose `Canvas` on top of the text grid.
+  - Implemented `Modifier.pointerInput` with `detectDragGestures` to detect drag gestures.
+  - Calculates starting cell row/col and center position on drag start based on cell size (`40.dp`).
+  - Dynamically draws a thick semi-transparent cyan selection line (`Color(0x9900E5FF)`) with `StrokeCap.Round` connecting cell centers.
+  - Implemented 8-way angle snapping (`atan2` + `PI / 4` rounding) ensuring lines strictly snap to horizontal, vertical, or 45° diagonal vectors.
+  - Invokes `onSelectionComplete(startCell, endCell)` callback when drag gesture completes.
 
 ---
 
