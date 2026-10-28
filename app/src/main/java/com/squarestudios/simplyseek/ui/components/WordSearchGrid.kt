@@ -33,7 +33,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.squarestudios.simplyseek.generator.WordSearchGenerator
+import com.squarestudios.simplyseek.logic.WordSearchSelectionManager
 import com.squarestudios.simplyseek.model.Cell
+import com.squarestudios.simplyseek.model.FoundWord
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -47,10 +49,11 @@ private val TechContainerBackground = Color(0xFF131722)
 private val TechTileBackground = Color(0xFF1B2030)
 private val TechBorderNeon = Color(0xFF00E5FF)
 private val TechTextCyan = Color(0xFF80D8FF)
-private val SelectionLineCyan = Color(0x9900E5FF) // Semi-transparent cyan
+private val SelectionLineCyan = Color(0x9900E5FF) // Semi-transparent cyan for active drag
+private val PermanentHighlightGreen = Color(0x9900E676) // Permanent green neon highlight for found words
 
 /**
- * Data class holding active selection gesture state.
+ * Data class holding active drag selection line state.
  */
 data class SelectionLine(
     val startCenter: Offset,
@@ -60,22 +63,25 @@ data class SelectionLine(
 )
 
 /**
- * Composable that displays a 2D grid of [Cell] objects with a dark "tech fluid" aesthetic
- * and an interactive swipe-to-select Canvas overlay snapping to 8-way angles.
+ * Interactive Word Search grid with swipe-to-select Canvas overlay and permanent found word highlights.
  *
  * @param grid The 2D list of [Cell] objects.
+ * @param targetWords List of target words to match against.
+ * @param foundWords List of [FoundWord] objects discovered so far to display permanent highlights.
  * @param modifier Custom layout modifier.
  * @param cellSize Square cell tile size (default: 40.dp).
  * @param cellSpacing Space between tiles (default: 4.dp).
- * @param onSelectionComplete Callback invoked when a drag gesture finishes with start and end cells.
+ * @param onWordFound Callback when a target word is matched upon drag completion.
  */
 @Composable
 fun InteractiveWordSearchGrid(
     grid: List<List<Cell>>,
+    targetWords: List<String> = emptyList(),
+    foundWords: List<FoundWord> = emptyList(),
     modifier: Modifier = Modifier,
     cellSize: Dp = 40.dp,
     cellSpacing: Dp = 4.dp,
-    onSelectionComplete: ((startCell: Cell, endCell: Cell) -> Unit)? = null,
+    onWordFound: ((FoundWord) -> Unit)? = null,
 ) {
     var activeSelection by remember { mutableStateOf<SelectionLine?>(null) }
 
@@ -132,11 +138,11 @@ fun InteractiveWordSearchGrid(
                 }
             }
 
-            // Swipe-to-select Canvas Overlay
+            // Swipe-to-select & Permanent Highlights Canvas Overlay
             Canvas(
                 modifier = Modifier
                     .matchParentSize()
-                    .pointerInput(grid) {
+                    .pointerInput(grid, targetWords, foundWords) {
                         detectDragGestures(
                             onDragStart = { startOffset ->
                                 val (startRow, startCol) = getCellCoordinates(
@@ -198,7 +204,16 @@ fun InteractiveWordSearchGrid(
                             },
                             onDragEnd = {
                                 activeSelection?.let { selection ->
-                                    onSelectionComplete?.invoke(selection.startCell, selection.currentCell)
+                                    val match = WordSearchSelectionManager.checkWordMatch(
+                                        startCell = selection.startCell,
+                                        endCell = selection.currentCell,
+                                        grid = grid,
+                                        targetWords = targetWords,
+                                        alreadyFoundWords = foundWords,
+                                    )
+                                    if (match != null) {
+                                        onWordFound?.invoke(match)
+                                    }
                                 }
                                 activeSelection = null
                             },
@@ -208,6 +223,32 @@ fun InteractiveWordSearchGrid(
                         )
                     },
             ) {
+                // 1. Draw permanent highlights for already found words
+                for (foundWord in foundWords) {
+                    val startCenter = getCellCenterOffset(
+                        row = foundWord.startCell.rowIndex,
+                        col = foundWord.startCell.colIndex,
+                        paddingPx = containerPaddingPx,
+                        cellStepPx = cellStepPx,
+                        cellSizePx = cellSizePx,
+                    )
+                    val endCenter = getCellCenterOffset(
+                        row = foundWord.endCell.rowIndex,
+                        col = foundWord.endCell.colIndex,
+                        paddingPx = containerPaddingPx,
+                        cellStepPx = cellStepPx,
+                        cellSizePx = cellSizePx,
+                    )
+                    drawLine(
+                        color = PermanentHighlightGreen,
+                        start = startCenter,
+                        end = endCenter,
+                        strokeWidth = cellSizePx * 0.75f,
+                        cap = StrokeCap.Round,
+                    )
+                }
+
+                // 2. Draw active temporary drag line
                 activeSelection?.let { selection ->
                     drawLine(
                         color = SelectionLineCyan,
@@ -310,5 +351,8 @@ fun InteractiveWordSearchGridPreview() {
         words = listOf("KOTLIN", "SEARCH", "SEEK", "TECH"),
     )
 
-    InteractiveWordSearchGrid(grid = sampleGrid)
+    InteractiveWordSearchGrid(
+        grid = sampleGrid,
+        targetWords = listOf("KOTLIN", "SEARCH", "SEEK", "TECH"),
+    )
 }

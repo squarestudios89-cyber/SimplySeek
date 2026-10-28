@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.0] - 2026-03-31
+
+### Added
+- **Selection Matching & Permanent Highlight System**:
+  - Created [`WordSearchSelectionManager.kt`](app/src/main/java/com/squarestudios/simplyseek/logic/WordSearchSelectionManager.kt) to extract letter strings along straight lines (horizontal, vertical, diagonal) and match them against target words (both forward and reverse).
+  - Integrated `onDragEnd` matching logic inside `InteractiveWordSearchGrid`.
+  - Added permanent neon green highlights (`Color(0x9900E676)`) on Canvas overlay for all discovered `FoundWord` objects.
+  - Automatically clears temporary drag selection lines upon release if no match is found.
+- **Selection Manager Unit Tests** in [`WordSearchSelectionManagerTest.kt`](app/src/test/java/com/squarestudios/simplyseek/logic/WordSearchSelectionManagerTest.kt):
+  - Verified forward, reverse, and diagonal word extraction and matching accuracy.
+
+---
+
 ## [0.5.0] - 2026-03-31
 
 ### Added
@@ -48,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `SavedGameDao` & `UserStatsDao`: Standard DAOs providing reactive `Flow` and coroutine `suspend` methods for insert, update, read, and delete operations.
   - `Converters`: TypeConverters converting `List<List<Cell>>` and `List<String>` to/from JSON strings via Gson.
   - `AppDatabase`: Abstract RoomDatabase singleton instance.
-- **Room TypeConverters Unit Tests** in [`ConvertersTest.kt`](app/src/test/java/com/squarestudios/simplyseek/db/converter/ConvertersTest.kt).
+- **Room TypeConverters Unit Tests** in [`ConvertersTest.kt`](app/src.test/java/com/squarestudios/simplyseek/db/converter/ConvertersTest.kt).
 
 ---
 
