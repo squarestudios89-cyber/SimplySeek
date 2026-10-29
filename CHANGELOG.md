@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.11.0] - 2026-10-28
+
+### Added
+- **Multi-Style Selection System**:
+  - Added `SelectionStyle` enum in [`WordSearchGrid.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt):
+    - `ILLUMINATED_TILES`: Individual tiles light up with neon fill (`0x4D00E5FF`) and border (`0xFF00E5FF`), removing the thick highlighter line over text.
+    - `LASER_LINE`: Thin 4.dp sharp neon laser beam + target ring beneath finger.
+    - `CAPSULE_OUTLINE`: Hollow neon rounded outline frame.
+    - `CLASSIC_HIGHLIGHT`: Translucent thick line.
+  - Added color state animations (`animateColorAsState`) for smooth tile lighting transitions.
+
+---
+
 ## [0.10.0] - 2026-10-28
 
 ### Added
@@ -43,8 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Google AdMob Integration**:
   - Integrated `com.google.android.gms:play-services-ads:23.6.0`.
-  - Added [`SimplySeekApplication.kt`](app/src/main/java/com/squarestudios/simplyseek/SimplySeekApplication.kt) initializing `MobileAds.initialize(this)`.
-  - Created [`AdMobBanner.kt`](app/src.main/java/com/squarestudios/simplyseek/ads/AdMobBanner.kt) wrapping `AndroidView` and `AdView` for banner ads at the bottom of the screen.
+  - Added [`SimplySeekApplication.kt`](app/src.main/java/com/squarestudios/simplyseek/SimplySeekApplication.kt) initializing `MobileAds.initialize(this)`.
+  - Created [`AdMobBanner.kt`](app/src/main/java/com/squarestudios/simplyseek/ads/AdMobBanner.kt) wrapping `AndroidView` and `AdView` for banner ads at the bottom of the screen.
   - Implemented [`InterstitialAdManager.kt`](app/src/main/java/com/squarestudios/simplyseek/ads/InterstitialAdManager.kt) to preload and present full-screen interstitial ads upon puzzle completion.
   - Added AdMob Application ID metadata and permissions to [`AndroidManifest.xml`](app/src/main/AndroidManifest.xml).
 
