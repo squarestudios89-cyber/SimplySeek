@@ -7,11 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [0.12.0] - 2026-10-30
 
-### Planned
-- Audio feedback & haptics on word selection.
-- Room database game save & user stats progression integration.
+### Added
+- **Permanent Word Highlighting & Discovered Word Tracking**:
+  - Multi-color palette ([`FoundWordColors`](class://com.squarestudios.simplyseek.ui.components.FoundWordColors)) assigning each discovered word a distinct neon highlight (emerald green, electric cyan, lemon gold, neon pink, lavender, orange, etc.).
+  - Persistent glowing rounded capsule highlight and laser core connecting discovered words on the board canvas across all selection styles.
+  - Interactive target word chips at the bottom of [`GameBoardScreen`](class://com.squarestudios.simplyseek.ui.screens.GameBoardScreenKt#GameBoardScreen) that light up with matching neon colors, checkmarks (`✓`), and strikethroughs upon discovery.
+  - Integrated `LinearProgressIndicator` tracking discovery progress (`X / Y` words found).
+  - Puzzle completion celebration card with "Play Next Puzzle" generator.
+  - "New Puzzle" generator button and dynamic screen-width auto-scaling with `BoxWithConstraints`.
+
+### Fixed
+- Fixed bug where `SnapshotStateList` mutations did not trigger `remember` recalculation in [`InteractiveWordSearchGrid`](class://com.squarestudios.simplyseek.ui.components.WordSearchGridKt#InteractiveWordSearchGrid), causing discovered words to lose highlight on the board.
+- Added `LocalInspectionMode.current` check to [`AdMobBanner`](class://com.squarestudios.simplyseek.ads.AdMobBannerKt#AdMobBanner) to fix preview render crashes in Android Studio.
 
 ---
 

@@ -8,6 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -62,6 +63,18 @@ private val TechTileBackground = Color(0xFF1B2030)
 private val TechBorderNeon = Color(0xFF00E5FF)
 private val TechTextCyan = Color(0xFF80D8FF)
 
+// Vibrant palette for uniquely highlighting discovered words
+val FoundWordColors = listOf(
+    Color(0xFF00E676), // Neon Mint / Emerald
+    Color(0xFF00E5FF), // Electric Neon Cyan
+    Color(0xFFFFD600), // Bright Lemon Yellow
+    Color(0xFFFF4081), // Vivid Neon Pink
+    Color(0xFFB388FF), // Neon Lavender / Violet
+    Color(0xFFFF9100), // Neon Amber / Tangerine
+    Color(0xFF00B0FF), // Vivid Sky Blue
+    Color(0xFF76FF03), // Vibrant Lime
+)
+
 // Illuminated Tile Grid Colors
 private val ActiveTileBackground = Color(0x4D00E5FF)
 private val ActiveTileBorder = Color(0xFF00E5FF)
@@ -85,14 +98,14 @@ data class SelectionLine(
 )
 
 /**
- * Interactive Word Search grid supporting customizable selection visual styles.
+ * Interactive Word Search grid supporting customizable selection visual styles
+ * and dynamic screen-width auto-scaling to prevent letter clipping.
  *
  * @param grid The 2D list of [Cell] objects.
  * @param targetWords List of target words to match against.
  * @param foundWords List of [FoundWord] objects discovered so far.
  * @param selectionStyle Visual selection indicator style chosen by the user.
  * @param modifier Custom layout modifier.
- * @param cellSize Square cell tile size (default: 40.dp).
  * @param cellSpacing Space between tiles (default: 4.dp).
  * @param onWordFound Callback when a target word is matched upon drag completion.
  */
@@ -103,46 +116,62 @@ fun InteractiveWordSearchGrid(
     foundWords: List<FoundWord> = emptyList(),
     selectionStyle: SelectionStyle = SelectionStyle.ILLUMINATED_TILES,
     modifier: Modifier = Modifier,
-    cellSize: Dp = 40.dp,
     cellSpacing: Dp = 4.dp,
     onWordFound: ((FoundWord) -> Unit)? = null,
 ) {
-    var activeSelection by remember { mutableStateOf<SelectionLine?>(null) }
-
-    val density = LocalDensity.current
-    val cellSizePx = with(density) { cellSize.toPx() }
-    val cellSpacingPx = with(density) { cellSpacing.toPx() }
-    val containerPaddingPx = with(density) { 12.dp.toPx() }
-
-    val cellStepPx = cellSizePx + cellSpacingPx
-
     val numRows = grid.size
     val numCols = if (grid.isNotEmpty()) grid[0].size else 0
 
-    // Compute set of currently active dragged cells (for Illuminated Tiles mode)
-    val activeSelectedCellPairs = remember(activeSelection, grid, selectionStyle) {
-        if (selectionStyle != SelectionStyle.ILLUMINATED_TILES) return@remember emptySet()
-        val selection = activeSelection ?: return@remember emptySet()
-        WordSearchSelectionManager.extractCellsBetween(selection.startCell, selection.currentCell, grid)
-            .map { Pair(it.rowIndex, it.colIndex) }
-            .toSet()
-    }
-
-    // Compute set of permanently found cell pairs (for Illuminated Tiles mode)
-    val foundCellPairs = remember(foundWords, grid, selectionStyle) {
-        if (selectionStyle != SelectionStyle.ILLUMINATED_TILES) return@remember emptySet()
-        foundWords.flatMap { foundWord ->
-            WordSearchSelectionManager.extractCellsBetween(foundWord.startCell, foundWord.endCell, grid)
-                .map { Pair(it.rowIndex, it.colIndex) }
-        }.toSet()
-    }
-
-    Box(
+    BoxWithConstraints(
         modifier = modifier
             .background(TechDarkBackground)
             .padding(16.dp),
         contentAlignment = Alignment.Center,
     ) {
+        val containerPadding = 24.dp
+        val availableWidth = maxWidth - containerPadding
+
+        val calculatedCellSize = if (numCols > 0) {
+            val totalSpacing = cellSpacing * (numCols - 1)
+            ((availableWidth - totalSpacing) / numCols).coerceIn(22.dp, 42.dp)
+        } else {
+            40.dp
+        }
+
+        var activeSelection by remember { mutableStateOf<SelectionLine?>(null) }
+
+        val density = LocalDensity.current
+        val cellSizePx = with(density) { calculatedCellSize.toPx() }
+        val cellSpacingPx = with(density) { cellSpacing.toPx() }
+        val containerPaddingPx = with(density) { 12.dp.toPx() }
+
+        val cellStepPx = cellSizePx + cellSpacingPx
+
+        // Compute set of currently active dragged cells
+        val activeSelectedCellPairs = remember(activeSelection, grid) {
+            val selection = activeSelection ?: return@remember emptySet()
+            WordSearchSelectionManager.extractCellsBetween(selection.startCell, selection.currentCell, grid)
+                .map { Pair(it.rowIndex, it.colIndex) }
+                .toSet()
+        }
+
+        // Map permanently found cell coordinates to their respective word highlight color
+        val foundCellMap = remember(foundWords.toList(), grid) {
+            val map = mutableMapOf<Pair<Int, Int>, Color>()
+            foundWords.forEachIndexed { index, foundWord ->
+                val color = FoundWordColors[index % FoundWordColors.size]
+                val cells = WordSearchSelectionManager.extractCellsBetween(
+                    startCell = foundWord.startCell,
+                    endCell = foundWord.endCell,
+                    grid = grid,
+                )
+                for (c in cells) {
+                    map[Pair(c.rowIndex, c.colIndex)] = color
+                }
+            }
+            map
+        }
+
         // Outer Tech Container
         Box(
             modifier = Modifier
@@ -173,13 +202,15 @@ fun InteractiveWordSearchGrid(
                         for (cell in row) {
                             val coord = Pair(cell.rowIndex, cell.colIndex)
                             val isSelected = activeSelectedCellPairs.contains(coord)
-                            val isFound = foundCellPairs.contains(coord)
+                            val foundColor = foundCellMap[coord]
+                            val isFound = foundColor != null
 
                             CellTile(
                                 cell = cell,
-                                cellSize = cellSize,
+                                cellSize = calculatedCellSize,
                                 isSelected = isSelected,
                                 isFound = isFound,
+                                foundColor = foundColor,
                             )
                         }
                     }
@@ -271,74 +302,86 @@ fun InteractiveWordSearchGrid(
                         )
                     },
             ) {
-                // Render Canvas elements for non-Illuminated Tile styles
-                if (selectionStyle != SelectionStyle.ILLUMINATED_TILES) {
-                    // 1. Permanent Highlights for Found Words
-                    for (foundWord in foundWords) {
-                        val startCenter = getCellCenterOffset(
-                            row = foundWord.startCell.rowIndex,
-                            col = foundWord.startCell.colIndex,
-                            paddingPx = containerPaddingPx,
-                            cellStepPx = cellStepPx,
-                            cellSizePx = cellSizePx,
-                        )
-                        val endCenter = getCellCenterOffset(
-                            row = foundWord.endCell.rowIndex,
-                            col = foundWord.endCell.colIndex,
-                            paddingPx = containerPaddingPx,
-                            cellStepPx = cellStepPx,
-                            cellSizePx = cellSizePx,
-                        )
+                // 1. Permanent Highlights for Found Words (Rendered across all styles so words stay clearly highlighted)
+                foundWords.forEachIndexed { index, foundWord ->
+                    val wordColor = FoundWordColors[index % FoundWordColors.size]
+                    val startCenter = getCellCenterOffset(
+                        row = foundWord.startCell.rowIndex,
+                        col = foundWord.startCell.colIndex,
+                        paddingPx = containerPaddingPx,
+                        cellStepPx = cellStepPx,
+                        cellSizePx = cellSizePx,
+                    )
+                    val endCenter = getCellCenterOffset(
+                        row = foundWord.endCell.rowIndex,
+                        col = foundWord.endCell.colIndex,
+                        paddingPx = containerPaddingPx,
+                        cellStepPx = cellStepPx,
+                        cellSizePx = cellSizePx,
+                    )
 
-                        val strokeWidth = when (selectionStyle) {
-                            SelectionStyle.LASER_LINE -> 6.dp.toPx()
-                            SelectionStyle.CAPSULE_OUTLINE -> cellSizePx * 0.75f
-                            else -> cellSizePx * 0.75f
+                    val strokeWidth = cellSizePx * 0.78f
+
+                    // Glowing translucent capsule body (circles/capsules the word)
+                    drawLine(
+                        color = wordColor.copy(alpha = 0.35f),
+                        start = startCenter,
+                        end = endCenter,
+                        strokeWidth = strokeWidth,
+                        cap = StrokeCap.Round,
+                    )
+
+                    // Bright inner laser filament accent
+                    drawLine(
+                        color = wordColor.copy(alpha = 0.85f),
+                        start = startCenter,
+                        end = endCenter,
+                        strokeWidth = 3.dp.toPx(),
+                        cap = StrokeCap.Round,
+                    )
+                }
+
+                // 2. Active Drag Selection Line
+                activeSelection?.let { selection ->
+                    when (selectionStyle) {
+                        SelectionStyle.LASER_LINE -> {
+                            drawLine(
+                                color = TechBorderNeon,
+                                start = selection.startCenter,
+                                end = selection.snappedEndCenter,
+                                strokeWidth = 4.dp.toPx(),
+                                cap = StrokeCap.Round,
+                            )
                         }
 
-                        drawLine(
-                            color = PermanentHighlightGreen,
-                            start = startCenter,
-                            end = endCenter,
-                            strokeWidth = strokeWidth,
-                            cap = StrokeCap.Round,
-                        )
-                    }
+                        SelectionStyle.CAPSULE_OUTLINE -> {
+                            drawLine(
+                                color = TechBorderNeon.copy(alpha = 0.7f),
+                                start = selection.startCenter,
+                                end = selection.snappedEndCenter,
+                                strokeWidth = cellSizePx * 0.75f,
+                                cap = StrokeCap.Round,
+                            )
+                        }
 
-                    // 2. Active Drag Selection Line
-                    activeSelection?.let { selection ->
-                        when (selectionStyle) {
-                            SelectionStyle.LASER_LINE -> {
-                                drawLine(
-                                    color = TechBorderNeon,
-                                    start = selection.startCenter,
-                                    end = selection.snappedEndCenter,
-                                    strokeWidth = 4.dp.toPx(),
-                                    cap = StrokeCap.Round,
-                                )
-                            }
+                        SelectionStyle.CLASSIC_HIGHLIGHT -> {
+                            drawLine(
+                                color = SelectionLineCyan,
+                                start = selection.startCenter,
+                                end = selection.snappedEndCenter,
+                                strokeWidth = cellSizePx * 0.7f,
+                                cap = StrokeCap.Round,
+                            )
+                        }
 
-                            SelectionStyle.CAPSULE_OUTLINE -> {
-                                drawLine(
-                                    color = TechBorderNeon,
-                                    start = selection.startCenter,
-                                    end = selection.snappedEndCenter,
-                                    strokeWidth = cellSizePx * 0.75f,
-                                    cap = StrokeCap.Round,
-                                )
-                            }
-
-                            SelectionStyle.CLASSIC_HIGHLIGHT -> {
-                                drawLine(
-                                    color = SelectionLineCyan,
-                                    start = selection.startCenter,
-                                    end = selection.snappedEndCenter,
-                                    strokeWidth = cellSizePx * 0.7f,
-                                    cap = StrokeCap.Round,
-                                )
-                            }
-
-                            else -> {}
+                        SelectionStyle.ILLUMINATED_TILES -> {
+                            drawLine(
+                                color = TechBorderNeon.copy(alpha = 0.45f),
+                                start = selection.startCenter,
+                                end = selection.snappedEndCenter,
+                                strokeWidth = 3.dp.toPx(),
+                                cap = StrokeCap.Round,
+                            )
                         }
                     }
                 }
@@ -353,22 +396,25 @@ fun CellTile(
     cellSize: Dp = 40.dp,
     isSelected: Boolean = false,
     isFound: Boolean = false,
+    foundColor: Color? = null,
     modifier: Modifier = Modifier,
 ) {
+    val activeFoundColor = foundColor ?: FoundTileBorder
+
     val targetBgColor = when {
-        isFound -> FoundTileBackground
+        isFound -> activeFoundColor.copy(alpha = 0.28f)
         isSelected -> ActiveTileBackground
         else -> TechTileBackground
     }
 
     val targetBorderColor = when {
-        isFound -> FoundTileBorder
+        isFound -> activeFoundColor
         isSelected -> ActiveTileBorder
         else -> TechBorderNeon.copy(alpha = 0.15f)
     }
 
     val targetTextColor = when {
-        isFound -> FoundTileText
+        isFound -> Color.White
         isSelected -> ActiveTileText
         else -> TechTextCyan
     }
@@ -427,13 +473,11 @@ private fun getCellCenterOffset(
 fun WordSearchGrid(
     grid: List<List<Cell>>,
     modifier: Modifier = Modifier,
-    cellSize: Dp = 40.dp,
     cellSpacing: Dp = 4.dp,
 ) {
     InteractiveWordSearchGrid(
         grid = grid,
         modifier = modifier,
-        cellSize = cellSize,
         cellSpacing = cellSpacing,
     )
 }
