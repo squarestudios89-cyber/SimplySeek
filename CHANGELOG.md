@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Integrated `LinearProgressIndicator` tracking discovery progress (`X / Y` words found).
   - Puzzle completion celebration card with "Play Next Puzzle" generator.
   - "New Puzzle" generator button and dynamic screen-width auto-scaling with `BoxWithConstraints`.
+  - Created [`AS_BUILT.md`](AS_BUILT.md) comprehensive living architectural specification and systems reference document.
 
 ### Fixed
 - Fixed bug where `SnapshotStateList` mutations did not trigger `remember` recalculation in [`InteractiveWordSearchGrid`](class://com.squarestudios.simplyseek.ui.components.WordSearchGridKt#InteractiveWordSearchGrid), causing discovered words to lose highlight on the board.
