@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.13.0] - 2026-10-30
+
+### Added
+- **Endless Category & Word Bank Architecture**:
+  - Created [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek/model/CategoryCatalog.kt) with **15 diverse playable categories** and over **350+ curated words**:
+    - **Tech & Gaming**: Computer Hardware, Software & Coding, Video Game Classics, PlayStation Hits, Xbox Franchises.
+    - **Automotive**: Car Makes, Car Engine Parts.
+    - **Pop Culture**: Cinema Blockbusters, Comic Book Heroes, Culinary & Food, Rock Legends.
+    - **Science & Nature**: Science & Physics, Deep Space & Cosmos, Wildlife & Animals, World Geography.
+  - Implemented procedural word pool sampling (`CategoryCatalog.getWordsForCategory(...)`) with seed-based shuffling and grid length constraint filtering, providing endless unique puzzle variations for every category.
+  - Upgraded [`CategorySelectScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/CategorySelectScreen.kt) with filter group tabs, scrollable card selector displaying category icons, word counts, and sample words, and tiered difficulty previews.
+  - Integrated dynamic category resolution into [`GameBoardScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/GameBoardScreen.kt).
+  - Added unit test suite [`CategoryCatalogTest.kt`](app/src/test/java/com/squarestudios/simplyseek/model/CategoryCatalogTest.kt).
+  - Updated [`AS_BUILT.md`](AS_BUILT.md) living documentation with Section 4.5.
+
+---
+
 ## [0.12.0] - 2026-10-30
 
 ### Added

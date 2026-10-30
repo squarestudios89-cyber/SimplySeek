@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.squarestudios.simplyseek.ads.AdMobBanner
 import com.squarestudios.simplyseek.generator.WordSearchGenerator
+import com.squarestudios.simplyseek.model.CategoryCatalog
 import com.squarestudios.simplyseek.model.FoundWord
 import com.squarestudios.simplyseek.ui.components.FoundWordColors
 import com.squarestudios.simplyseek.ui.components.InteractiveWordSearchGrid
@@ -70,19 +71,17 @@ fun GameBoardScreen(
 
     var puzzleSeed by remember { mutableIntStateOf(0) }
 
-    val sampleWords = remember(category, difficulty) {
-        val wordPool = when (category.lowercase()) {
-            "technology" -> listOf("KOTLIN", "ANDROID", "COMPOSE", "ROOM", "GRADLE", "PIXEL", "COROUTINE")
-            "animals" -> listOf("TIGER", "LION", "EAGLE", "BEAR", "SHARK", "WOLF", "ZEBRA", "PANDA")
-            "science" -> listOf("ATOM", "CELL", "GRAVITY", "FORCE", "ENERGY", "PLANET", "QUANTUM")
-            else -> listOf("SPACE", "MOON", "ORBIT", "STAR", "GALAXY", "ROCKET", "COMET", "COSMOS")
-        }
-        val count = when (difficulty.lowercase()) {
-            "easy" -> 4
-            "hard" -> 8
-            else -> 6
-        }
-        wordPool.take(count)
+    val categoryInfo = remember(category) {
+        CategoryCatalog.getCategoryById(category)
+    }
+    val categoryDisplayName = categoryInfo?.title ?: category.replace('_', ' ').uppercase()
+
+    val sampleWords = remember(category, difficulty, puzzleSeed) {
+        CategoryCatalog.getWordsForCategory(
+            categoryId = category,
+            difficulty = difficulty,
+            seed = puzzleSeed,
+        )
     }
 
     val generator = remember { WordSearchGenerator() }
@@ -123,7 +122,7 @@ fun GameBoardScreen(
             ) {
                 Column {
                     Text(
-                        text = category.uppercase(),
+                        text = categoryDisplayName.uppercase(),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.Monospace,

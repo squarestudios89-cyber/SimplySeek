@@ -3,7 +3,7 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.12.0` (Build Version Code `1`)  
+> **Current Version:** `0.13.0` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
 > **Last Updated:** 2026-10-30  
 
@@ -142,6 +142,36 @@ The board supports multiple player-selectable visual presentation modes:
   - **Progress Bar**: `LinearProgressIndicator` dynamically reflects the ratio of found words.
   - **Puzzle Completion Card**: Triggers an animated celebration dialog offering one-tap `"PLAY NEXT PUZZLE"` generation.
 
+### 4.5. Endless Category & Word Bank Architecture (`CategoryCatalog`) (v0.13.0)
+Located in [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek/model/CategoryCatalog.kt):
+- **Category System**: Organizes over 350 curated, clean uppercase words into **15 distinct playable categories** classified under 4 intuitive filter groups:
+  - **Tech & Gaming**:
+    - `computer_hardware`: CPU, GPU, RAM, Motherboard, SSD, Heatsink, Cooler, Chipset, Optical, Transistor...
+    - `software_coding`: Kotlin, Python, Compiler, Debugger, Coroutine, Recursion, Database, Algorithm...
+    - `gaming_classics`: Mario, Zelda, Pokemon, Skyrim, Portal, Doom, Minecraft, Witcher, Fallout...
+    - `playstation_hits`: God of War, Uncharted, Spiderman, Bloodborne, Horizon, Ratchet, Tsushima...
+    - `xbox_franchises`: Halo, Forza, Gears, Fable, Starfield, Crackdown, Hellblade, Sea of Thieves...
+  - **Automotive**:
+    - `car_makes`: Ferrari, Porsche, Lamborghini, Toyota, BMW, Mercedes, Audi, McLaren, Bugatti...
+    - `car_engine`: Piston, Camshaft, Crankshaft, Cylinder, Turbo, Radiator, Alternator, Supercharger...
+  - **Pop Culture**:
+    - `movies_cinema`: Inception, Matrix, Interstellar, Gladiator, Titanic, Terminator, Jurassic...
+    - `comic_characters`: Batman, Superman, Spiderman, Wolverine, Deadpool, Thor, Daredevil, Joker...
+    - `food_culinary`: Pizza, Sushi, Burger, Ramen, Croissant, Lasagna, Risotto, Tiramisu...
+    - `music_rock`: Beatles, Queen, Nirvana, Metallica, Pink Floyd, Led Zeppelin, Radiohead...
+  - **Science & Nature**:
+    - `science_physics`: Atom, Electron, Gravity, Quantum, Photon, Fusion, Relativity, Entropy...
+    - `deep_space`: Galaxy, Nebula, Supernova, Black Hole, Asteroid, Andromeda, Pulsar, Cosmos...
+    - `wild_animals`: Cheetah, Elephant, Kangaroo, Leopard, Falcon, Dolphin, Chameleon, Octopus...
+    - `world_wonders`: Everest, Amazon, Sahara, Nile, Colosseum, Pyramids, Volcano, Archipelago...
+- **Infinite Replayability Sampling**:
+  - `CategoryCatalog.getWordsForCategory(categoryId, difficulty, seed)` filters candidate words by grid length ($L \le 8$ for Easy, $L \le 10$ for Medium, $L \le 12$ for Hard) and shuffles with a deterministic seed.
+  - Every click of `"NEW PUZZLE"` or `"PLAY NEXT PUZZLE"` increments the seed, sampling an entirely different combination of words and regenerating a unique procedural grid layout.
+- **Topic Selection UI (`CategorySelectScreen`)**:
+  - Filter group tabs (`ALL`, `TECH & GAMING`, `AUTOMOTIVE`, `POP CULTURE`, `SCIENCE & NATURE`).
+  - Interactive cards featuring category icons, titles, word counts, and sample words.
+  - Tiered difficulty selection with grid size dimensions (`8x8`, `10x10`, `12x12`).
+
 ---
 
 ## 5. Third-Party Services & Integrations
@@ -238,6 +268,7 @@ com.squarestudios.simplyseek/
 ├── logic/
 │   └── WordSearchSelectionManager.kt   # Ray-casting, coordinate math, and string verification
 ├── model/
+│   ├── CategoryCatalog.kt              # 15 topic categories and dynamic word bank sampling
 │   └── WordSearchModels.kt             # Core data classes (Cell, FoundWord, GridState)
 ├── navigation/
 │   ├── AppNavHost.kt                   # NavHost declaring routes and transitions
@@ -246,7 +277,7 @@ com.squarestudios.simplyseek/
     ├── components/
     │   └── WordSearchGrid.kt           # Interactive grid, Canvas renderer, and CellTile
     └── screens/
-        ├── CategorySelectScreen.kt     # Theme and difficulty selection screen
+        ├── CategorySelectScreen.kt     # Scrollable topic category and difficulty selector
         ├── GameBoardScreen.kt          # Active puzzle screen with word tracking HUD
         ├── HomeScreen.kt               # Main landing menu
         └── StatsScreen.kt              # Player progression and stats overview
@@ -257,11 +288,12 @@ com.squarestudios.simplyseek/
 ## 9. Verification & Quality Assurance
 
 - **Unit Testing**: Located in `app/src/test/java/...`:
+  - `CategoryCatalogTest`: Verifies category population, group filtering, difficulty length bounds, and seed determinism.
   - `WordSearchGeneratorTest`: Verifies grid boundary enforcement, target word density, and letter constraints.
   - `WordSearchSelectionManagerTest`: Validates forward, reverse, and diagonal word extraction and boundary containment.
   - `ConvertersTest`: Verifies Gson round-trip serialization of 2D `Cell` grids and string lists.
   - `ModelTests`: Asserts immutability and copy behavior.
-- **Visual Testing**: Fully verified Compose Previews (`GameBoardScreenPreview`, `InteractiveWordSearchGridPreview`, `GameBoardScreenWithFoundPreview`) using Android Studio Compose Preview rendering.
+- **Visual Testing**: Fully verified Compose Previews (`CategorySelectScreenPreview`, `GameBoardScreenPreview`, `InteractiveWordSearchGridPreview`, `GameBoardScreenWithFoundPreview`) using Android Studio Compose Preview rendering.
 - **Build Verification**: Continuously validated via Gradle tasks `app:compileDebugKotlin` and `:app:testDebugUnitTest`.
 
 ---
@@ -276,3 +308,4 @@ com.squarestudios.simplyseek/
 | **v0.11.0**| 2026-10-30 | Multi-Style Selection System (`SelectionStyle`) | `ui/components/WordSearchGrid` |
 | **v0.12.0**| 2026-10-30 | Persistent multi-color highlighting & interactive word tracking HUD | `WordSearchGrid`, `GameBoardScreen`, `AdMobBanner` |
 | **v0.12.1**| 2026-10-30 | Initial creation of this As-Built document | `AS_BUILT.md` |
+| **v0.13.0**| 2026-10-30 | Endless Category Catalog (15 categories, 350+ words, filter groups, replayable seed sampling) | `CategoryCatalog`, `CategorySelectScreen`, `GameBoardScreen`, `CategoryCatalogTest` |
