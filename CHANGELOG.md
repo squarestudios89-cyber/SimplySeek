@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.14.1] - 2026-11-03
+
+### Fixed
+- **Startup Crash Resolution (Room Database Annotation Processor)**:
+  - Fixed `RuntimeException: Cannot find implementation for com.squarestudios.simplyseek.db.AppDatabase. AppDatabase_Impl does not exist` occurring immediately on app startup.
+  - Replaced Java's `annotationProcessor(libs.room.compiler)` with Kotlin's KAPT `kapt(libs.room.compiler)` in [`app/build.gradle.kts`](app/build.gradle.kts) and applied `org.jetbrains.kotlin.kapt` in [`build.gradle.kts`](build.gradle.kts).
+  - Ensured Room generates `AppDatabase_Impl` for all Kotlin `@Database` and `@Dao` definitions, restoring flawless app startup and Room database initialization.
+
+---
+
 ## [0.14.0] - 2026-11-03
 
 ### Added

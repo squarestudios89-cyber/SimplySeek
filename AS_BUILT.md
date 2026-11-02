@@ -3,7 +3,7 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.14.0` (Build Version Code `1`)  
+> **Current Version:** `0.14.1` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
 > **Last Updated:** 2026-11-03  
 
@@ -39,7 +39,7 @@ Visually, the game adopts a cybernetic **"Tech Fluid"** aesthetic characterized 
 | **UI Framework** | Jetpack Compose (BoM) | `2025.02.00` | Declarative UI, gesture detection, and custom Canvas drawing |
 | **Design System** | Material 3 (`androidx.compose.material3`) | BoM-managed | Base typography, surface theming, and layout primitives |
 | **Navigation** | Navigation Compose | `2.8.8` | Single-activity screen routing and type-safe argument passing |
-| **Persistence (Local)**| AndroidX Room | `2.8.5` | Local SQLite database for saved games and lifetime player stats |
+| **Persistence (Local)**| AndroidX Room | `2.8.5` | Local SQLite database for saved games and lifetime player stats (processed via Kotlin KAPT `org.jetbrains.kotlin.kapt`) |
 | **JSON Serialization**| Google Gson | `2.15.0` | Room TypeConverters for matrix/list persistence |
 | **Advertising** | Google Play Services Ads | `23.6.0` | AdMob Banner and Interstitial ad display |
 | **In-App Billing** | Google Play Billing KTX | `7.1.1` | In-app purchases (One-time "Remove Ads" entitlement) |
@@ -330,3 +330,4 @@ com.squarestudios.simplyseek/
 | **v0.12.1**| 2026-10-30 | Initial creation of this As-Built document | `AS_BUILT.md` |
 | **v0.13.0**| 2026-10-30 | Endless Category Catalog (15 categories, 350+ words, filter groups, replayable seed sampling) | `CategoryCatalog`, `CategorySelectScreen`, `GameBoardScreen`, `CategoryCatalogTest` |
 | **v0.14.0**| 2026-11-03 | Live Home Dashboard with Operator Level, XP, Solved Count, and Daily Streak | `HomeScreen`, `StatsScreen`, `UserStatsRepository`, `GameBoardScreen`, `UserStatsRepositoryTest` |
+| **v0.14.1**| 2026-11-03 | Configured Kotlin KAPT annotation processor (`org.jetbrains.kotlin.kapt`) for Room compiler (`kapt(libs.room.compiler)`), resolving startup crash caused by missing `AppDatabase_Impl` | `build.gradle.kts`, `app/build.gradle.kts` |
