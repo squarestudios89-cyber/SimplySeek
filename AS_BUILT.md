@@ -3,9 +3,9 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.13.0` (Build Version Code `1`)  
+> **Current Version:** `0.14.0` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
-> **Last Updated:** 2026-10-30  
+> **Last Updated:** 2026-11-03  
 
 ---
 
@@ -172,6 +172,23 @@ Located in [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek
   - Interactive cards featuring category icons, titles, word counts, and sample words.
   - Tiered difficulty selection with grid size dimensions (`8x8`, `10x10`, `12x12`).
 
+### 4.6. Home Dashboard & User Progression Engine (`HomeScreen` & `UserStatsRepository`) (v0.14.0)
+Located in [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt) and [`UserStatsRepository.kt`](app/src/main/java/com/squarestudios/simplyseek/db/repository/UserStatsRepository.kt):
+- **Live User Stats Dashboard**:
+  - Automatically queries the Room database via `UserStatsDao` using reactive Kotlin Flows (`observeUserStats`).
+  - **Operator Level & Rank**: Dynamically computes user levels ($Level = \lfloor XP / 250 \rfloor + 1$) and titles (`Novice Seeker`, `Grid Apprentice`, `Seek Specialist`, `Code Hunter`, `Grid Overlord`, `Cyber Grandmaster`).
+  - **Level Progress Indicator**: Real-time `LinearProgressIndicator` visualizing progress towards the next level ($XP \pmod{250}$).
+  - **Metrics Grid**: High-contrast cybernetic cards displaying:
+    - **Puzzles Solved** (Emerald neon accent)
+    - **Consecutive Daily Streak** (Tangerine flame accent with calendar validation)
+    - **Mastery Tier** (Violet lavender accent)
+  - **Quick Topic Teaser**: Displays available categories count and quick-play direct button.
+- **Progression Recording Flow**:
+  - [`GameBoardScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/GameBoardScreen.kt) triggers `UserStatsRepository.recordPuzzleCompleted(difficulty)` upon all target words being discovered.
+  - Awards XP scaled by difficulty (+50 XP for Easy, +100 XP for Medium, +150 XP for Hard), increments solved count, and validates consecutive daily streak.
+- **Career Stats Screen (`StatsScreen.kt`)**:
+  - Re-architected with reactive Room data observation, level tier cards, and detailed metric breakdown cards.
+
 ---
 
 ## 5. Third-Party Services & Integrations
@@ -257,9 +274,11 @@ com.squarestudios.simplyseek/
 │   ├── dao/
 │   │   ├── SavedGameDao.kt             # DAO for session checkpoint persistence
 │   │   └── UserStatsDao.kt             # DAO for XP and streak accumulation
-│   └── entity/
-│       ├── SavedGame.kt                # Saved game Room entity
-│       └── UserStats.kt                # Player stats Room entity
+│   ├── entity/
+│   │   ├── SavedGame.kt                # Saved game Room entity
+│   │   └── UserStats.kt                # Player stats Room entity
+│   └── repository/
+│       └── UserStatsRepository.kt      # Progression logic, streak tracking, and Room repository
 ├── generator/
 │   └── WordSearchGenerator.kt          # 8-directional procedural puzzle generator
 ├── leaderboard/
@@ -279,8 +298,8 @@ com.squarestudios.simplyseek/
     └── screens/
         ├── CategorySelectScreen.kt     # Scrollable topic category and difficulty selector
         ├── GameBoardScreen.kt          # Active puzzle screen with word tracking HUD
-        ├── HomeScreen.kt               # Main landing menu
-        └── StatsScreen.kt              # Player progression and stats overview
+        ├── HomeScreen.kt               # Cybernetic home dashboard displaying live player stats
+        └── StatsScreen.kt              # Detailed player progression and career stats overview
 ```
 
 ---
@@ -288,12 +307,13 @@ com.squarestudios.simplyseek/
 ## 9. Verification & Quality Assurance
 
 - **Unit Testing**: Located in `app/src/test/java/...`:
+  - `UserStatsRepositoryTest`: Validates initial stats initialization, XP rewards by difficulty, and puzzle counts.
   - `CategoryCatalogTest`: Verifies category population, group filtering, difficulty length bounds, and seed determinism.
   - `WordSearchGeneratorTest`: Verifies grid boundary enforcement, target word density, and letter constraints.
   - `WordSearchSelectionManagerTest`: Validates forward, reverse, and diagonal word extraction and boundary containment.
   - `ConvertersTest`: Verifies Gson round-trip serialization of 2D `Cell` grids and string lists.
   - `ModelTests`: Asserts immutability and copy behavior.
-- **Visual Testing**: Fully verified Compose Previews (`CategorySelectScreenPreview`, `GameBoardScreenPreview`, `InteractiveWordSearchGridPreview`, `GameBoardScreenWithFoundPreview`) using Android Studio Compose Preview rendering.
+- **Visual Testing**: Fully verified Compose Previews (`HomeScreenPreview`, `StatsScreenPreview`, `CategorySelectScreenPreview`, `GameBoardScreenPreview`, `InteractiveWordSearchGridPreview`, `GameBoardScreenWithFoundPreview`) using Android Studio Compose Preview rendering.
 - **Build Verification**: Continuously validated via Gradle tasks `app:compileDebugKotlin` and `:app:testDebugUnitTest`.
 
 ---
@@ -309,3 +329,4 @@ com.squarestudios.simplyseek/
 | **v0.12.0**| 2026-10-30 | Persistent multi-color highlighting & interactive word tracking HUD | `WordSearchGrid`, `GameBoardScreen`, `AdMobBanner` |
 | **v0.12.1**| 2026-10-30 | Initial creation of this As-Built document | `AS_BUILT.md` |
 | **v0.13.0**| 2026-10-30 | Endless Category Catalog (15 categories, 350+ words, filter groups, replayable seed sampling) | `CategoryCatalog`, `CategorySelectScreen`, `GameBoardScreen`, `CategoryCatalogTest` |
+| **v0.14.0**| 2026-11-03 | Live Home Dashboard with Operator Level, XP, Solved Count, and Daily Streak | `HomeScreen`, `StatsScreen`, `UserStatsRepository`, `GameBoardScreen`, `UserStatsRepositoryTest` |

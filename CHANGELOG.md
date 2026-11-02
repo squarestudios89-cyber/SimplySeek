@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.14.0] - 2026-11-03
+
+### Added
+- **Home Dashboard & Live User Progression System**:
+  - Upgraded [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt) into an interactive player dashboard backed by Room database Kotlin Flows (`observeUserStats`).
+  - Added **Operator Level & Rank** badges (`Novice Seeker`, `Grid Apprentice`, `Seek Specialist`, `Code Hunter`, `Grid Overlord`, `Cyber Grandmaster`) with real-time level progress bars.
+  - Implemented neon stats metric cards:
+    - **Puzzles Solved** (Emerald neon)
+    - **Daily Streak Tracker** (Tangerine flame with daily date validation)
+    - **Mastery Tier** (Violet lavender)
+  - Created [`UserStatsRepository.kt`](app/src/main/java/com/squarestudios/simplyseek/db/repository/UserStatsRepository.kt) encapsulating XP rewards (+50 to +150 XP based on difficulty tier), puzzle counts, and streak updates.
+  - Wired puzzle completion events in [`GameBoardScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/GameBoardScreen.kt) to record progression directly into the Room database.
+  - Upgraded [`StatsScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/StatsScreen.kt) to observe real-time player progression.
+  - Added unit test suite [`UserStatsRepositoryTest.kt`](app/src/test/java/com/squarestudios/simplyseek/db/repository/UserStatsRepositoryTest.kt).
+  - Updated [`AS_BUILT.md`](AS_BUILT.md) with Section 4.6 and maintenance log.
+
+---
+
 ## [0.13.0] - 2026-10-30
 
 ### Added

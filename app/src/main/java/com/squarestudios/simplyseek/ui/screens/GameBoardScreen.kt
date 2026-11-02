@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,11 +43,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.squarestudios.simplyseek.ads.AdMobBanner
+import com.squarestudios.simplyseek.db.repository.UserStatsRepository
 import com.squarestudios.simplyseek.generator.WordSearchGenerator
 import com.squarestudios.simplyseek.model.CategoryCatalog
 import com.squarestudios.simplyseek.model.FoundWord
 import com.squarestudios.simplyseek.ui.components.FoundWordColors
 import com.squarestudios.simplyseek.ui.components.InteractiveWordSearchGrid
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 private val TechDarkBackground = Color(0xFF0B0D14)
 private val TechContainerBackground = Color(0xFF131722)
@@ -63,6 +68,9 @@ fun GameBoardScreen(
     modifier: Modifier = Modifier,
     initialFoundWords: List<FoundWord> = emptyList(),
 ) {
+    val context = LocalContext.current
+    val statsRepository = remember(context) { UserStatsRepository.getInstance(context) }
+
     val size = when (difficulty.lowercase()) {
         "easy" -> 8
         "hard" -> 12
@@ -97,6 +105,15 @@ fun GameBoardScreen(
 
     val isPuzzleComplete = targetWords.isNotEmpty() && foundWords.size >= targetWords.size
     val progress = if (targetWords.isNotEmpty()) (foundWords.size.toFloat() / targetWords.size).coerceIn(0f, 1f) else 0f
+
+    // Save stats when puzzle is completed
+    LaunchedEffect(isPuzzleComplete) {
+        if (isPuzzleComplete) {
+            withContext(Dispatchers.IO) {
+                statsRepository.recordPuzzleCompleted(difficulty)
+            }
+        }
+    }
 
     Column(
         modifier = modifier
