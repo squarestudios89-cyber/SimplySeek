@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.17.0] - 2026-11-03
+
+### Added
+- **Tactile Haptic Feedback Engine for Word Circling & Tile Traversal**:
+  - Implemented [`GameHapticFeedback.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/haptics/GameHapticFeedback.kt) and `HapticFeedbackController` interface to deliver physical tactile sensations as players interact with the word search grid:
+    - **Tile Selection Ticks**: As the player drags or circles over the letters in [`InteractiveWordSearchGrid`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt), each newly spanned grid tile fires an immediate, subtle tactile tick (`SEGMENT_TICK` / `TEXT_HANDLE_MOVE` / `CLOCK_TICK`). A 35ms debounce threshold prevents high-frequency boundary jitter while preserving high-speed swipe accuracy.
+    - **Touchdown Feedback**: Touching down on a starting letter emits a snappy gesture start tap (`GESTURE_START` / `KEYBOARD_TAP`).
+    - **Word Discovered Confirmation**: Successfully identifying a valid target word delivers a distinct, rewarding multi-stage confirmation vibration (`CONFIRM` / waveform vibration).
+  - Added `<uses-permission android:name="android.permission.VIBRATE" />` to [`AndroidManifest.xml`](app/src/main/AndroidManifest.xml) with multi-tiered fallback to Android `Vibrator` and `VibratorManager` for seamless support across all Android devices and OEM variants.
+  - Added unit test suite in [`GameHapticFeedbackTest.kt`](app/src/test/java/com/squarestudios/simplyseek/ui/haptics/GameHapticFeedbackTest.kt).
+
+---
+
 ## [0.16.0] - 2026-11-03
 
 ### Added

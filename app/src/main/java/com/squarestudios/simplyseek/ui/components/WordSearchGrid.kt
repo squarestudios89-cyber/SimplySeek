@@ -39,6 +39,9 @@ import com.squarestudios.simplyseek.generator.WordSearchGenerator
 import com.squarestudios.simplyseek.logic.WordSearchSelectionManager
 import com.squarestudios.simplyseek.model.Cell
 import com.squarestudios.simplyseek.model.FoundWord
+import com.squarestudios.simplyseek.ui.haptics.GameHapticFeedback
+import com.squarestudios.simplyseek.ui.haptics.HapticFeedbackController
+import com.squarestudios.simplyseek.ui.haptics.rememberGameHapticFeedback
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -117,6 +120,7 @@ fun InteractiveWordSearchGrid(
     selectionStyle: SelectionStyle = SelectionStyle.ILLUMINATED_TILES,
     modifier: Modifier = Modifier,
     cellSpacing: Dp = 2.dp,
+    haptics: HapticFeedbackController = rememberGameHapticFeedback(),
     onWordFound: ((FoundWord) -> Unit)? = null,
 ) {
     val numRows = grid.size
@@ -247,6 +251,7 @@ fun InteractiveWordSearchGrid(
                                         startCell = startCell,
                                         currentCell = startCell,
                                     )
+                                    haptics.performSelectionStart()
                                 }
                             },
                             onDrag = { change, _ ->
@@ -277,6 +282,12 @@ fun InteractiveWordSearchGrid(
 
                                     val currentCell = grid[currRow][currCol]
 
+                                    if (currentCell.rowIndex != currentSelection.currentCell.rowIndex ||
+                                        currentCell.colIndex != currentSelection.currentCell.colIndex
+                                    ) {
+                                        haptics.performTileTick()
+                                    }
+
                                     activeSelection = currentSelection.copy(
                                         snappedEndCenter = snappedEndCenter,
                                         currentCell = currentCell,
@@ -293,6 +304,7 @@ fun InteractiveWordSearchGrid(
                                         alreadyFoundWords = foundWords,
                                     )
                                     if (match != null) {
+                                        haptics.performWordFoundSuccess()
                                         onWordFound?.invoke(match)
                                     }
                                 }

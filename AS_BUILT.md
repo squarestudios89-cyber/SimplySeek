@@ -3,7 +3,7 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.16.0` (Build Version Code `1`)  
+> **Current Version:** `0.17.0` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
 > **Last Updated:** 2026-11-03  
 
@@ -204,6 +204,20 @@ Located in [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/s
 - **Career Stats Screen (`StatsScreen.kt`)**:
   - Re-architected with reactive Room data observation, level tier cards, and detailed metric breakdown cards.
 
+### 4.7. Tactile Haptic Feedback Engine (`GameHapticFeedback`) (v0.17.0)
+Located in [`GameHapticFeedback.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/haptics/GameHapticFeedback.kt):
+- **Tactile Grid Selection Ticks**:
+  - Every time the player's drag path spans across or retracts from a letter cell in [`InteractiveWordSearchGrid`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt), `haptics.performTileTick()` triggers an immediate, crisp physical click.
+  - Multi-tier API resolution leverages `HapticFeedbackConstants.SEGMENT_TICK` (API 34+), `TEXT_HANDLE_MOVE` (API 27+), or `CLOCK_TICK`, augmented by fallback to hardware `Vibrator` / `VibratorManager` (`EFFECT_TICK`).
+  - Enforces a 35ms debounce threshold to eliminate high-frequency boundary jitter while preserving rapid swiping accuracy.
+- **Gesture Start Tap**:
+  - Touching down on an initial letter cell fires `haptics.performSelectionStart()`, producing an instant tactile contact impulse (`GESTURE_START` / `KEYBOARD_TAP`).
+- **Word Discovered Confirmation**:
+  - Successfully completing and releasing a valid target word triggers `haptics.performWordFoundSuccess()`, delivering a distinct, celebratory double-pulse haptic vibration (`CONFIRM` / waveform vibration).
+- **Interface & Testability**:
+  - Encapsulated behind `HapticFeedbackController` with a testable `NoOpHapticFeedbackController` implementation.
+  - Requires and declares `<uses-permission android:name="android.permission.VIBRATE" />` in [`AndroidManifest.xml`](app/src/main/AndroidManifest.xml).
+
 ---
 
 ## 5. Third-Party Services & Integrations
@@ -310,6 +324,8 @@ com.squarestudios.simplyseek/
 └── ui/
     ├── components/
     │   └── WordSearchGrid.kt           # Interactive grid, Canvas renderer, and CellTile
+    ├── haptics/
+    │   └── GameHapticFeedback.kt       # Tactile feedback engine and HapticFeedbackController
     └── screens/
         ├── CategorySelectScreen.kt     # Scrollable topic category and difficulty selector
         ├── GameBoardScreen.kt          # Active puzzle screen with word tracking HUD
@@ -326,6 +342,7 @@ com.squarestudios.simplyseek/
   - `CategoryCatalogTest`: Verifies category population, group filtering, difficulty length bounds, and seed determinism.
   - `WordSearchGeneratorTest`: Verifies grid boundary enforcement, target word density, and letter constraints.
   - `WordSearchSelectionManagerTest`: Validates forward, reverse, and diagonal word extraction and boundary containment.
+  - `GameHapticFeedbackTest`: Validates haptic event recording, null-safety, and No-Op fallback behavior.
   - `ConvertersTest`: Verifies Gson round-trip serialization of 2D `Cell` grids and string lists.
   - `ModelTests`: Asserts immutability and copy behavior.
 - **Visual Testing**: Fully verified Compose Previews (`HomeScreenPreview`, `StatsScreenPreview`, `CategorySelectScreenPreview`, `GameBoardScreenPreview`, `InteractiveWordSearchGridPreview`, `GameBoardScreenWithFoundPreview`) using Android Studio Compose Preview rendering.
@@ -349,3 +366,4 @@ com.squarestudios.simplyseek/
 | **v0.15.0**| 2026-11-03 | Edge-to-edge system insets alignment, mobile grid tier resizing (8x8 Easy, 9x9 Medium, 10x10 Hard), boosted typography (0.58 ratio), and symmetric center-based touch snapping | `MainActivity`, `CategorySelectScreen`, `GameBoardScreen`, `HomeScreen`, `StatsScreen`, `WordSearchGrid`, `CategoryCatalog` |
 | **v0.15.1**| 2026-11-03 | Expanded target word density (6 Easy, 8 Medium, 13 Hard), dense placement fallback engine, and expanded word pools (430+ words) | `CategoryCatalog`, `WordSearchGenerator`, `CategorySelectScreen`, `CategoryCatalogTest`, `WordSearchGeneratorTest` |
 | **v0.16.0**| 2026-11-03 | Fandom and franchise catalog expansion (26 categories, 1,000+ words, Harry Potter, Big Bang Theory, MOVIES_TV group, sequential puzzle indexing) | `CategoryCatalog`, `GameBoardScreen`, `HomeScreen`, `CategoryCatalogTest` |
+| **v0.17.0**| 2026-11-03 | Tactile haptic feedback engine for tile circling, selection start, and word found confirmation | `GameHapticFeedback`, `WordSearchGrid`, `AndroidManifest.xml`, `GameHapticFeedbackTest` |
