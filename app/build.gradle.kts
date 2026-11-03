@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -62,9 +63,18 @@ dependencies {
     // Google Play Billing Library
     implementation(libs.billing.ktx)
 
-    // Firebase Firestore
+    // Firebase Auth & Firestore
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+
+    // Google Sign-In via Credential Manager
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
+    // Image loading for player avatars
+    implementation(libs.coil.compose)
 
     // Room Database
     implementation(libs.room.runtime)

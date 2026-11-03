@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.squarestudios.simplyseek.ui.screens.CategorySelectScreen
 import com.squarestudios.simplyseek.ui.screens.GameBoardScreen
 import com.squarestudios.simplyseek.ui.screens.HomeScreen
+import com.squarestudios.simplyseek.ui.screens.LeaderboardScreen
 import com.squarestudios.simplyseek.ui.screens.StatsScreen
 
 /**
@@ -35,6 +36,9 @@ fun AppNavHost(
                 },
                 onNavigateToStats = {
                     navController.navigate(Screen.Stats.route)
+                },
+                onNavigateToLeaderboard = {
+                    navController.navigate(Screen.Leaderboard.route)
                 },
             )
         }
@@ -63,12 +67,24 @@ fun AppNavHost(
             GameBoardScreen(
                 category = category,
                 difficulty = difficulty,
+                onNavigateToLeaderboard = {
+                    navController.navigate(Screen.Leaderboard.route)
+                },
             )
         }
 
         // 4. Stats Screen
         composable(route = Screen.Stats.route) {
             StatsScreen()
+        }
+
+        // 5. Global Leaderboard Screen
+        composable(route = Screen.Leaderboard.route) {
+            LeaderboardScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+            )
         }
     }
 }

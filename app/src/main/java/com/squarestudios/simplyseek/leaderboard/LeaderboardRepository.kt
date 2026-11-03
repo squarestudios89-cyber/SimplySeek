@@ -22,12 +22,18 @@ class LeaderboardRepository(
      * @param playerName Display name of the player.
      * @param timeInSeconds Completion time in seconds.
      * @param difficulty Difficulty tier (e.g., "Easy", "Medium", "Hard").
+     * @param userId Optional Firebase User ID.
+     * @param userPhotoUrl Optional player avatar URL.
+     * @param categoryTitle Optional name of the category played.
      * @return [Result] indicating success or failure.
      */
     suspend fun submitScore(
         playerName: String,
         timeInSeconds: Long,
         difficulty: String,
+        userId: String = "",
+        userPhotoUrl: String = "",
+        categoryTitle: String = "",
     ): Result<Unit> {
         return try {
             val entry = hashMapOf(
@@ -35,6 +41,9 @@ class LeaderboardRepository(
                 "timeInSeconds" to timeInSeconds,
                 "difficulty" to difficulty,
                 "timestamp" to System.currentTimeMillis(),
+                "userId" to userId,
+                "userPhotoUrl" to userPhotoUrl,
+                "categoryTitle" to categoryTitle,
             )
             leaderboardCollection.add(entry).await()
             Result.success(Unit)

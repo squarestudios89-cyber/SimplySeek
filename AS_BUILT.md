@@ -3,7 +3,7 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.18.0` (Build Version Code `1`)  
+> **Current Version:** `0.19.0` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
 > **Last Updated:** 2026-11-03  
 
@@ -44,6 +44,8 @@ Visually, the game adopts a cybernetic **"Tech Fluid"** aesthetic characterized 
 | **Advertising** | Google Play Services Ads | `23.6.0` | AdMob Banner and Interstitial ad display |
 | **In-App Billing** | Google Play Billing KTX | `7.1.1` | In-app purchases (One-time "Remove Ads" entitlement) |
 | **Cloud Database** | Firebase Firestore KTX | BoM `33.10.0` | Real-time global leaderboards and score aggregation |
+| **Authentication** | Firebase Auth KTX & Android Credential Manager | BoM `33.10.0` / `1.5.0` | One-tap Google Sign-In and verified player accounts |
+| **Image Loading** | Coil Compose | `2.7.0` | Asynchronous rendering of verified Google player avatars |
 
 ---
 
@@ -59,6 +61,7 @@ flowchart TD
         CatSelect[CategorySelectScreen]
         Board[GameBoardScreen]
         Stats[StatsScreen]
+        Leaderboard[LeaderboardScreen]
         GridComp[InteractiveWordSearchGrid]
     end
 
@@ -233,10 +236,16 @@ Located in [`GameHapticFeedback.kt`](app/src/main/java/com/squarestudios/simplys
   - SKU: `premium_remove_ads` (One-time, non-consumable In-App Purchase).
 - **Entitlement State**: Exposes `isRemoveAdsPurchased: StateFlow<Boolean>` for reactive UI updates and ad suppression.
 
-### 5.3. Firebase Firestore Global Leaderboards
+### 5.3. Firebase Firestore Global Leaderboards & Real-Time Sync (v0.19.0)
 - **Repository (`LeaderboardRepository.kt`)**: Interacts with the `"leaderboards"` Firestore collection.
-- **Data Model (`LeaderboardEntry.kt`)**: Stores `playerName`, `timeInSeconds`, `difficulty`, and `timestamp`.
-- **Real-Time Queries**: `getTopScoresFlow(difficulty)` returns a real-time reactive `Flow` querying top scores ordered by lowest completion time.
+- **Data Model (`LeaderboardEntry.kt`)**: Stores `playerName`, `timeInSeconds`, `difficulty`, `timestamp`, `userId`, `userPhotoUrl`, and `categoryTitle`.
+- **Real-Time Queries**: `getTopScoresFlow(difficulty)` returns a real-time reactive `Flow` querying top scores ordered by lowest completion time (ascending).
+- **Leaderboard UI (`LeaderboardScreen.kt`)**: Filterable by difficulty tier (`EASY`, `MEDIUM`, `HARD`), renders podium badges (#1 Gold, #2 Silver, #3 Bronze), player avatar images via Coil (`AsyncImage`), category labels, and solve times (`01:24`).
+
+### 5.4. Google Authentication & Player Accounts (`AuthRepository.kt`) (v0.19.0)
+- **Engine**: Modern Android Credential Manager (`androidx.credentials`) integrating `GetGoogleIdOption` and Firebase `GoogleAuthProvider`.
+- **Session State**: Exposes `currentUser: StateFlow<FirebaseUser?>`, `playerName`, `photoUrl`, and `userId`.
+- **One-Tap Sign-In / Sign-Out**: Handled seamlessly from the top banner in `LeaderboardScreen.kt`. Enables verified score submissions.
 
 ---
 
@@ -294,6 +303,8 @@ com.squarestudios.simplyseek/
 ├── ads/
 │   ├── AdMobBanner.kt                  # Composable banner ad wrapper with preview fallback
 │   └── InterstitialAdManager.kt        # Preloader and dispatcher for interstitial ads
+├── auth/
+│   └── AuthRepository.kt               # Google Sign-In & Credential Manager player account manager
 ├── billing/
 │   └── BillingManager.kt               # Play Billing client wrapper for "Remove Ads"
 ├── db/
@@ -328,8 +339,9 @@ com.squarestudios.simplyseek/
     │   └── GameHapticFeedback.kt       # Tactile feedback engine and HapticFeedbackController
     └── screens/
         ├── CategorySelectScreen.kt     # Scrollable topic category and difficulty selector
-        ├── GameBoardScreen.kt          # Active puzzle screen with word tracking HUD
+        ├── GameBoardScreen.kt          # Active puzzle screen with word tracking HUD & stopwatch
         ├── HomeScreen.kt               # Cybernetic home dashboard displaying live player stats
+        ├── LeaderboardScreen.kt        # Worldwide speedrun rankings with Google Auth & tier tabs
         └── StatsScreen.kt              # Detailed player progression and career stats overview
 ```
 
@@ -343,6 +355,7 @@ com.squarestudios.simplyseek/
   - `WordSearchGeneratorTest`: Verifies grid boundary enforcement, target word density, and letter constraints.
   - `WordSearchSelectionManagerTest`: Validates forward, reverse, and diagonal word extraction and boundary containment.
   - `GameHapticFeedbackTest`: Validates haptic event recording, null-safety, and No-Op fallback behavior.
+  - `LeaderboardEntryTest`: Validates data serialization defaults and fields on leaderboard entries.
   - `ConvertersTest`: Verifies Gson round-trip serialization of 2D `Cell` grids and string lists.
   - `ModelTests`: Asserts immutability and copy behavior.
 - **Visual Testing**: Fully verified Compose Previews (`HomeScreenPreview`, `StatsScreenPreview`, `CategorySelectScreenPreview`, `GameBoardScreenPreview`, `InteractiveWordSearchGridPreview`, `GameBoardScreenWithFoundPreview`) using Android Studio Compose Preview rendering.
@@ -368,3 +381,4 @@ com.squarestudios.simplyseek/
 | **v0.16.0**| 2026-11-03 | Fandom and franchise catalog expansion (26 categories, 1,000+ words, Harry Potter, Big Bang Theory, MOVIES_TV group, sequential puzzle indexing) | `CategoryCatalog`, `GameBoardScreen`, `HomeScreen`, `CategoryCatalogTest` |
 | **v0.17.0**| 2026-11-03 | Tactile haptic feedback engine for tile circling, selection start, and word found confirmation | `GameHapticFeedback`, `WordSearchGrid`, `AndroidManifest.xml`, `GameHapticFeedbackTest` |
 | **v0.18.0**| 2026-11-03 | Massive word pool expansion across all 26 categories (1,600+ words, 60–80 words per category) | `CategoryCatalog`, `HomeScreen`, `CategoryCatalogTest` |
+| **v0.19.0**| 2026-11-03 | Live Global Leaderboards & Google Authentication via Credential Manager, solve timer, and score submission | `LeaderboardScreen`, `AuthRepository`, `LeaderboardRepository`, `GameBoardScreen`, `HomeScreen`, `AppNavHost` |

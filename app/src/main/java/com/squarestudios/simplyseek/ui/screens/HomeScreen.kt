@@ -62,6 +62,7 @@ fun HomeScreen(
     onNavigateToCategorySelect: () -> Unit,
     onNavigateToStats: () -> Unit,
     modifier: Modifier = Modifier,
+    onNavigateToLeaderboard: () -> Unit = {},
     initialStats: UserStats? = null,
 ) {
     val isInspection = LocalInspectionMode.current
@@ -332,7 +333,29 @@ fun HomeScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedButton(
+                onClick = onNavigateToLeaderboard,
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(50.dp),
+                border = BorderStroke(
+                    width = 1.dp,
+                    brush = Brush.linearGradient(listOf(TechGold, TechOrange)),
+                ),
+                shape = RoundedCornerShape(12.dp),
+            ) {
+                Text(
+                    text = "🏆 GLOBAL LEADERBOARDS",
+                    color = TechGold,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 13.sp,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedButton(
                 onClick = onNavigateToStats,
@@ -346,7 +369,7 @@ fun HomeScreen(
                 shape = RoundedCornerShape(12.dp),
             ) {
                 Text(
-                    text = "📊 DETAILED STATS & LEADERBOARDS",
+                    text = "📊 CAREER PROGRESSION STATS",
                     color = TechButtonNeon,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace,

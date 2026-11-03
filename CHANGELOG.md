@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.19.0] - 2026-11-03
+
+### Added
+- **Live Global Leaderboards & Google Authentication Integration**:
+  - Implemented [`AuthRepository.kt`](app/src/main/java/com/squarestudios/simplyseek/auth/AuthRepository.kt) leveraging Android's official Credential Manager (`androidx.credentials`, `googleid`, and `GoogleAuthProvider`) for one-tap Google Sign-In and player session tracking.
+  - Applied `com.google.gms.google-services` plugin and integrated `google-services.json`, linking SimplySeek with the Firebase backend project (`simplyseek`).
+  - Added dedicated destination screen [`LeaderboardScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/LeaderboardScreen.kt) (`Screen.Leaderboard`) displaying real-time Firestore leaderboards partitioned by difficulty tier (`EASY`, `MEDIUM`, `HARD`).
+  - Styled high-contrast cybernetic leaderboard cards with podium rank badges (Gold, Silver, Bronze), player avatars loaded via Coil Compose (`AsyncImage`), verified Google indicators, and formatted solve times (`01:24`).
+  - Added an active game stopwatch timer to [`GameBoardScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/GameBoardScreen.kt), with direct **"🏆 SUBMIT SCORE TO LEADERBOARD"** and **"VIEW LEADERBOARDS"** actions upon puzzle completion.
+  - Added a prominent **"🏆 GLOBAL LEADERBOARDS"** direct action button to [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt).
+  - Enhanced [`LeaderboardRepository.kt`](app/src/main/java/com/squarestudios/simplyseek/leaderboard/LeaderboardRepository.kt) and [`LeaderboardEntry.kt`](app/src/main/java/com/squarestudios/simplyseek/leaderboard/LeaderboardEntry.kt) to associate player IDs, avatar URLs, and categories with leaderboard scores.
+  - Added unit test suite in [`LeaderboardEntryTest.kt`](app/src/test/java/com/squarestudios/simplyseek/leaderboard/LeaderboardEntryTest.kt).
+
+---
+
 ## [0.18.0] - 2026-11-03
 
 ### Added

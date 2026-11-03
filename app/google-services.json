@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "402042129809",
+    "project_id": "simplyseek",
+    "storage_bucket": "simplyseek.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402042129809:android:2327e1aa7c6a3aa6b65e30",
+        "android_client_info": {
+          "package_name": "com.squarestudios.simplyseek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402042129809-om5fbdtpifl5pn3eh3mbeq6nno3esm18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.squarestudios.simplyseek",
+            "certificate_hash": "8ac2983b14889df03b37856d80927726ea2411c4"
+          }
+        },
+        {
+          "client_id": "402042129809-u1jeuo4l64ntv7oftchdvl7oevddibcs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3xRtx0id-k9TV8XfKaDRMdXXCn1doj3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402042129809-u1jeuo4l64ntv7oftchdvl7oevddibcs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

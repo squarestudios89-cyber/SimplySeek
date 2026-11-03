@@ -15,4 +15,5 @@ sealed class Screen(val route: String) {
         }
     }
     data object Stats : Screen("stats")
+    data object Leaderboard : Screen("leaderboard")
 }
