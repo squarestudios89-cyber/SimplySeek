@@ -61,12 +61,12 @@ class CategoryCatalogTest {
         assertTrue("Easy words must fit within 8x8 grid", easyWords.all { it.length <= 8 })
 
         val mediumWords = CategoryCatalog.getWordsForCategory("computer_hardware", "Medium", seed = 1)
-        assertEquals(7, mediumWords.size)
-        assertTrue("Medium words must fit within 10x10 grid", mediumWords.all { it.length <= 10 })
+        assertEquals(6, mediumWords.size)
+        assertTrue("Medium words must fit within 9x9 grid", mediumWords.all { it.length <= 9 })
 
         val hardWords = CategoryCatalog.getWordsForCategory("computer_hardware", "Hard", seed = 1)
-        assertEquals(9, hardWords.size)
-        assertTrue("Hard words must fit within 12x12 grid", hardWords.all { it.length <= 12 })
+        assertEquals(8, hardWords.size)
+        assertTrue("Hard words must fit within 10x10 grid", hardWords.all { it.length <= 10 })
     }
 
     @Test

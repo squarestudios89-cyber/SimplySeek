@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.15.0] - 2026-11-03
+
+### Fixed
+- **System Navigation Bar & Insets Alignment**:
+  - Added `enableEdgeToEdge()` in [`MainActivity.kt`](app/src/main/java/com/squarestudios/simplyseek/MainActivity.kt) and applied `Modifier.safeDrawingPadding()` across all screens ([`CategorySelectScreen`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/CategorySelectScreen.kt), [`HomeScreen`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt), [`GameBoardScreen`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/GameBoardScreen.kt), and [`StatsScreen`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/StatsScreen.kt)).
+  - Fixed issue where the bottom action button ("START PUZZLE" on CategorySelectScreen) and AdMob banner overlapped the phone's 3-button Home/Back navigation bar, preventing inadvertent exits to the phone's launcher.
+
+### Changed
+- **Mobile Grid Sizing & Font Legibility Overhaul**:
+  - Adjusted phone grid sizing tiers to keep cells large and comfortable on mobile screens:
+    - **Easy**: `8x8` grid (5 words, max length 8) — large ~40dp tiles, 23sp bold font.
+    - **Medium**: `9x9` grid (6 words, max length 9) — spacious ~36dp tiles, 21sp bold font (replaced cramped 10x10).
+    - **Hard**: `10x10` grid (8 words, max length 10) — comfortable ~32dp tiles, 19sp bold font (replaced unplayable 12x12 on phones).
+  - Reclaimed over 60.dp of horizontal screen real-estate by eliminating redundant padding in [`InteractiveWordSearchGrid`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt) (container padding reduced to 6.dp, cell spacing reduced from 4.dp to 2.dp).
+  - Boosted cell font scaling factor from `0.45` to `0.58` with `FontWeight.ExtraBold`, making letters nearly 2x larger on screen.
+  - Refined touch coordinate math in `getCellCoordinates` with symmetric center-based rounding for forgiving and accurate 8-directional word selection.
+
+---
+
 ## [0.14.1] - 2026-11-03
 
 ### Fixed

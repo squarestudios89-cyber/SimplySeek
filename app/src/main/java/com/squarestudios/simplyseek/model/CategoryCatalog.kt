@@ -303,8 +303,8 @@ object CategoryCatalog {
 
         val (maxWordLength, wordCount) = when (difficulty.lowercase()) {
             "easy" -> Pair(8, 5)
-            "hard" -> Pair(12, 9)
-            else -> Pair(10, 7) // Medium
+            "hard" -> Pair(10, 8)
+            else -> Pair(9, 6) // Medium
         }
 
         // Filter words that fit on the grid dimension

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -65,7 +66,8 @@ fun CategorySelectScreen(
         modifier = modifier
             .fillMaxSize()
             .background(TechDarkBackground)
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 12.dp),
+            .safeDrawingPadding()
+            .padding(horizontal = 16.dp, vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // Header
@@ -169,9 +171,9 @@ fun CategorySelectScreen(
                 difficulties.forEach { diff ->
                     val isSelected = diff == selectedDifficulty
                     val sizeLabel = when (diff) {
-                        "Easy" -> "8x8"
-                        "Hard" -> "12x12"
-                        else -> "10x10"
+                        "Easy" -> "8x8 • 5W"
+                        "Hard" -> "10x10 • 8W"
+                        else -> "9x9 • 6W"
                     }
 
                     Box(

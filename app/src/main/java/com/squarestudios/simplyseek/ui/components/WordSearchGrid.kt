@@ -116,7 +116,7 @@ fun InteractiveWordSearchGrid(
     foundWords: List<FoundWord> = emptyList(),
     selectionStyle: SelectionStyle = SelectionStyle.ILLUMINATED_TILES,
     modifier: Modifier = Modifier,
-    cellSpacing: Dp = 4.dp,
+    cellSpacing: Dp = 2.dp,
     onWordFound: ((FoundWord) -> Unit)? = null,
 ) {
     val numRows = grid.size
@@ -125,15 +125,15 @@ fun InteractiveWordSearchGrid(
     BoxWithConstraints(
         modifier = modifier
             .background(TechDarkBackground)
-            .padding(16.dp),
+            .padding(horizontal = 2.dp, vertical = 6.dp),
         contentAlignment = Alignment.Center,
     ) {
-        val containerPadding = 24.dp
+        val containerPadding = 12.dp
         val availableWidth = maxWidth - containerPadding
 
         val calculatedCellSize = if (numCols > 0) {
             val totalSpacing = cellSpacing * (numCols - 1)
-            ((availableWidth - totalSpacing) / numCols).coerceIn(22.dp, 42.dp)
+            ((availableWidth - totalSpacing) / numCols).coerceIn(24.dp, 46.dp)
         } else {
             40.dp
         }
@@ -143,7 +143,7 @@ fun InteractiveWordSearchGrid(
         val density = LocalDensity.current
         val cellSizePx = with(density) { calculatedCellSize.toPx() }
         val cellSpacingPx = with(density) { cellSpacing.toPx() }
-        val containerPaddingPx = with(density) { 12.dp.toPx() }
+        val containerPaddingPx = with(density) { 6.dp.toPx() }
 
         val cellStepPx = cellSizePx + cellSpacingPx
 
@@ -188,7 +188,7 @@ fun InteractiveWordSearchGrid(
                     ),
                     shape = RoundedCornerShape(16.dp),
                 )
-                .padding(12.dp),
+                .padding(6.dp),
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(cellSpacing),
@@ -228,6 +228,7 @@ fun InteractiveWordSearchGrid(
                                     offset = startOffset,
                                     paddingPx = containerPaddingPx,
                                     cellStepPx = cellStepPx,
+                                    cellSizePx = cellSizePx,
                                     numRows = numRows,
                                     numCols = numCols,
                                 )
@@ -269,6 +270,7 @@ fun InteractiveWordSearchGrid(
                                         offset = snappedEndCenter,
                                         paddingPx = containerPaddingPx,
                                         cellStepPx = cellStepPx,
+                                        cellSizePx = cellSizePx,
                                         numRows = numRows,
                                         numCols = numCols,
                                     )
@@ -426,20 +428,20 @@ fun CellTile(
     Box(
         modifier = modifier
             .size(cellSize)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(6.dp))
             .background(animatedBgColor)
             .border(
                 width = if (isSelected || isFound) 2.dp else 1.dp,
                 color = animatedBorderColor,
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(6.dp),
             ),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = cell.char.toString(),
             color = animatedTextColor,
-            fontSize = (cellSize.value * 0.45f).sp,
-            fontWeight = if (isSelected || isFound) FontWeight.ExtraBold else FontWeight.Bold,
+            fontSize = (cellSize.value * 0.58f).sp,
+            fontWeight = FontWeight.ExtraBold,
             fontFamily = FontFamily.Monospace,
         )
     }
@@ -449,11 +451,16 @@ private fun getCellCoordinates(
     offset: Offset,
     paddingPx: Float,
     cellStepPx: Float,
+    cellSizePx: Float,
     numRows: Int,
     numCols: Int,
 ): Pair<Int, Int> {
-    val col = ((offset.x - paddingPx) / cellStepPx).toInt().coerceIn(0, (numCols - 1).coerceAtLeast(0))
-    val row = ((offset.y - paddingPx) / cellStepPx).toInt().coerceIn(0, (numRows - 1).coerceAtLeast(0))
+    val col = round((offset.x - (paddingPx + cellSizePx / 2f)) / cellStepPx)
+        .toInt()
+        .coerceIn(0, (numCols - 1).coerceAtLeast(0))
+    val row = round((offset.y - (paddingPx + cellSizePx / 2f)) / cellStepPx)
+        .toInt()
+        .coerceIn(0, (numRows - 1).coerceAtLeast(0))
     return Pair(row, col)
 }
 
@@ -473,7 +480,7 @@ private fun getCellCenterOffset(
 fun WordSearchGrid(
     grid: List<List<Cell>>,
     modifier: Modifier = Modifier,
-    cellSpacing: Dp = 4.dp,
+    cellSpacing: Dp = 2.dp,
 ) {
     InteractiveWordSearchGrid(
         grid = grid,

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -73,8 +74,8 @@ fun GameBoardScreen(
 
     val size = when (difficulty.lowercase()) {
         "easy" -> 8
-        "hard" -> 12
-        else -> 10 // Medium
+        "hard" -> 10
+        else -> 9 // Medium
     }
 
     var puzzleSeed by remember { mutableIntStateOf(0) }
@@ -118,7 +119,8 @@ fun GameBoardScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(TechDarkBackground),
+            .background(TechDarkBackground)
+            .safeDrawingPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -126,7 +128,7 @@ fun GameBoardScreen(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // Header Info & Restart Action

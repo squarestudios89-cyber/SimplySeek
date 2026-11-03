@@ -3,7 +3,7 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.14.1` (Build Version Code `1`)  
+> **Current Version:** `0.15.0` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
 > **Last Updated:** 2026-11-03  
 
@@ -102,7 +102,7 @@ flowchart TD
 
 ### 4.1. Procedural Grid Generator (`WordSearchGenerator`)
 Located in [`WordSearchGenerator.kt`](app/src/main/java/com/squarestudios/simplyseek/generator/WordSearchGenerator.kt):
-- **Algorithm**: Populates a square matrix of size $N \times N$ ($8 \times 8$ for Easy, $10 \times 10$ for Medium, $12 \times 12$ for Hard).
+- **Algorithm**: Populates a square matrix of size $N \times N$ ($8 \times 8$ for Easy, $9 \times 9$ for Medium, $10 \times 10$ for Hard).
 - **8-Directional Placement**:
   - Horizontal (`FORWARD`, `BACKWARD`)
   - Vertical (`FORWARD`, `BACKWARD`)
@@ -113,7 +113,9 @@ Located in [`WordSearchGenerator.kt`](app/src/main/java/com/squarestudios/simply
 
 ### 4.2. Selection & Touch Engine (`WordSearchSelectionManager` & `InteractiveWordSearchGrid`)
 Located in [`WordSearchGrid.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/components/WordSearchGrid.kt) and [`WordSearchSelectionManager.kt`](app/src/main/java/com/squarestudios/simplyseek/logic/WordSearchSelectionManager.kt):
-- **Dynamic Auto-Scaling**: Evaluates screen constraints using `BoxWithConstraints`. Automatically calculates square cell dimensions `cellSize = ((availableWidth - totalSpacing) / numCols).coerceIn(22.dp, 42.dp)` to guarantee no clipping or letter truncation across all screen form factors.
+- **Dynamic Auto-Scaling**: Evaluates screen constraints using `BoxWithConstraints`. Automatically calculates square cell dimensions `cellSize = ((availableWidth - totalSpacing) / numCols).coerceIn(24.dp, 46.dp)` with tight 6.dp padding and 2.dp cell spacing to maximize playable area on phone screens.
+- **Enlarged Typography**: Tiles feature extra-bold monospace text sized at `58%` of the cell dimension (`cellSize * 0.58f`), producing ~19sp to 24sp letters for maximum legibility and effortless thumb/finger selection.
+- **Symmetric Center Snapping**: Touch offsets are normalized against cell centers (`(offset - (padding + cellSize / 2)) / cellStep`) with nearest-integer rounding, providing symmetric, forgiving selection across all 8 directions.
 - **Ray-Cast Snapping**: Touch drag offsets are converted into angles $\theta = \text{atan2}(\Delta y, \Delta x)$ and snapped to the nearest 45° step ($\text{round}(\theta / \frac{\pi}{4}) \cdot \frac{\pi}{4}$).
 - **Bidirectional Word Matching**: `checkWordMatch` validates words extracted both forwards and backwards against target lists while preventing duplicate registrations.
 
@@ -331,3 +333,4 @@ com.squarestudios.simplyseek/
 | **v0.13.0**| 2026-10-30 | Endless Category Catalog (15 categories, 350+ words, filter groups, replayable seed sampling) | `CategoryCatalog`, `CategorySelectScreen`, `GameBoardScreen`, `CategoryCatalogTest` |
 | **v0.14.0**| 2026-11-03 | Live Home Dashboard with Operator Level, XP, Solved Count, and Daily Streak | `HomeScreen`, `StatsScreen`, `UserStatsRepository`, `GameBoardScreen`, `UserStatsRepositoryTest` |
 | **v0.14.1**| 2026-11-03 | Configured Kotlin KAPT annotation processor (`org.jetbrains.kotlin.kapt`) for Room compiler (`kapt(libs.room.compiler)`), resolving startup crash caused by missing `AppDatabase_Impl` | `build.gradle.kts`, `app/build.gradle.kts` |
+| **v0.15.0**| 2026-11-03 | Edge-to-edge system insets alignment, mobile grid tier resizing (8x8 Easy, 9x9 Medium, 10x10 Hard), boosted typography (0.58 ratio), and symmetric center-based touch snapping | `MainActivity`, `CategorySelectScreen`, `GameBoardScreen`, `HomeScreen`, `StatsScreen`, `WordSearchGrid`, `CategoryCatalog` |
