@@ -64,6 +64,16 @@ class WordSearchGeneratorTest {
         assertEquals(cols, grid[0].size)
     }
 
+    @Test
+    fun testDenseWordPlacement() {
+        val words = listOf(
+            "PISTON", "TURBO", "VALVES", "CLUTCH", "EXHAUST", "GASKET",
+            "STARTER", "HEADER", "OILPUMP", "BLOCK", "HEAD", "BELT", "PULLEY",
+        )
+        val gridState = generator.generateGridWithState(10, 10, words)
+        assertTrue("Expected at least 11 of 13 words to be placed, placed: ${gridState.targetWords.size}", gridState.targetWords.size >= 11)
+    }
+
     private fun checkWordAt(
         grid: List<List<com.squarestudios.simplyseek.model.Cell>>,
         word: String,

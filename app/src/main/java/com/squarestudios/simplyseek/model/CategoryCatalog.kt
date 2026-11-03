@@ -50,6 +50,7 @@ object CategoryCatalog {
                 "KEYBOARD", "ROUTER", "COOLER", "HEATSINK", "FIRMWARE", "STORAGE",
                 "OPTICAL", "POWER", "BUS", "CACHE", "TRANSISTOR", "SOCKET",
                 "THERMAL", "FAN", "DISPLAY", "GRAPHICS", "MEMORY", "HARDDRIVE",
+                "MODEM", "PORT", "PIXEL", "CLOCK", "DRIVER", "REGISTER",
             ),
         ),
 
@@ -65,6 +66,7 @@ object CategoryCatalog {
                 "FUNCTION", "VARIABLE", "COROUTINE", "ALGORITHM", "RECURSION",
                 "SYNTAX", "LIBRARY", "RUNTIME", "POINTER", "THREAD", "BINARY",
                 "BOOLEAN", "ARRAY", "OBJECT", "INTERFACE", "BACKEND", "FRONTEND",
+                "CLASS", "LOOP", "BUILD", "INDEX", "STACK", "QUEUE",
             ),
         ),
 
@@ -80,6 +82,7 @@ object CategoryCatalog {
                 "SONIC", "PORTAL", "FALLOUT", "SKYRIM", "MINECRAFT", "WITCHER",
                 "CYBERPUNK", "WARCRAFT", "DIABLO", "HALFLIFE", "STARCRAFT", "RESIDENT",
                 "QUAKE", "BIOSHOCK", "TERRARIA", "OVERWATCH", "APEX",
+                "CRASH", "SPYRO", "MEGAMAN", "CASTLE", "SIMS",
             ),
         ),
 
@@ -95,6 +98,7 @@ object CategoryCatalog {
                 "CLANK", "TSUSHIMA", "INFAMOUS", "RETURNAL", "LASTOFUS", "TURISMO",
                 "KILLZONE", "DAYSGONE", "RESISTANCE", "SOCOM", "JAK", "DAXTER",
                 "ASTRO", "SHADOW", "SLYCOOPER", "KNACK",
+                "GRAN", "MEDIEVIL", "WIPEOUT", "RESOGUN", "GHOST",
             ),
         ),
 
@@ -110,6 +114,7 @@ object CategoryCatalog {
                 "PERFECTDARK", "HELLBLADE", "BANJO", "KAZOOIE", "SEATHIEVES",
                 "PSYCHONAUTS", "CONKER", "FUSION", "ORIX", "FALLOUT", "PREY",
                 "AVOWED", "CONTABAND", "EVERWILD",
+                "MECH", "QUANTUM", "RECORE", "STATE", "DECAY",
             ),
         ),
 
@@ -125,6 +130,7 @@ object CategoryCatalog {
                 "AUDI", "HONDA", "NISSAN", "FORD", "CHEVROLET", "MCLAREN",
                 "SUBARU", "MAZDA", "VOLKSWAGEN", "HYUNDAI", "BUGATTI", "JAGUAR",
                 "BENTLEY", "VOLVO", "MASERATI", "PAGANI", "DODGE", "CORVETTE",
+                "ACURA", "INFINITI", "LEXUS", "TESLA", "LOTUS", "JEEP",
             ),
         ),
 
@@ -140,6 +146,7 @@ object CategoryCatalog {
                 "ALTERNATOR", "EXHAUST", "MANIFOLD", "SPARKPLUG", "INJECTOR",
                 "CLUTCH", "FLYWHEEL", "VALVES", "GASKET", "STARTER", "CARBURETOR",
                 "SUPERCHARGER", "INTERCOOLER", "HEADER", "TIMINGBELT", "OILPUMP",
+                "BLOCK", "HEAD", "BELT", "VALVE", "ROD", "PULLEY",
             ),
         ),
 
@@ -155,6 +162,7 @@ object CategoryCatalog {
                 "TERMINATOR", "ALIEN", "PREDATOR", "GODFATHER", "JURASSIC", "CASABLANCA",
                 "SCARFACE", "GOODFELLAS", "ROCKY", "STARWARS", "JAWS", "SHINING",
                 "PULPFICTION", "BATMAN", "AVENGERS", "DUNE", "OPPENHEIMER",
+                "HEAT", "FARGO", "SEVEN", "SPEED", "ALIENS", "GLORY",
             ),
         ),
 
@@ -170,6 +178,7 @@ object CategoryCatalog {
                 "HULK", "DEADPOOL", "FLASH", "AQUAMAN", "DAREDEVIL", "CYCLOPS",
                 "NIGHTWING", "ROBIN", "JOKER", "MAGNETO", "PUNISHER", "SHAZAM",
                 "HAWKEYE", "SUPERGIRL", "CATWOMAN", "CARNAGE", "VENOM",
+                "BEAST", "ROGUE", "STORM", "GAMBIT", "CABLE", "BISHOP",
             ),
         ),
 
@@ -185,6 +194,7 @@ object CategoryCatalog {
                 "PHOTON", "QUARK", "FUSION", "FISSION", "ENERGY", "KINETIC",
                 "VELOCITY", "RELATIVITY", "ENTROPY", "MAGNETISM", "RADIATION",
                 "PARTICLE", "THERMAL", "PLASMA", "COLLIDER", "MASS",
+                "FORCE", "VECTOR", "SCALAR", "TORQUE", "JOULE", "NEWTON",
             ),
         ),
 
@@ -200,6 +210,7 @@ object CategoryCatalog {
                 "ANDROMEDA", "PULSAR", "QUASAR", "ORBIT", "ECLIPSE", "PLANET",
                 "SATELLITE", "METEOR", "HORIZON", "TELESCOPE", "COSMOS", "AURORA",
                 "SOLAR", "VOYAGER", "HUBBLE", "CLUSTER",
+                "LUNAR", "MARS", "VENUS", "JUPITER", "SATURN", "TITAN",
             ),
         ),
 
@@ -215,6 +226,7 @@ object CategoryCatalog {
                 "PENGUIN", "FALCON", "PLATYPUS", "CHAMELEON", "GIRAFFE", "GORILLA",
                 "RHINOCEROS", "CROCODILE", "PANTHER", "BUFFALO", "ANTELOPE", "EAGLE",
                 "JAGUAR", "WALRUS", "GAZELLE",
+                "TIGER", "LION", "ZEBRA", "MONKEY", "PANDA", "KOALA",
             ),
         ),
 
@@ -230,6 +242,7 @@ object CategoryCatalog {
                 "PYRAMIDS", "TAJMAHAL", "GLACIER", "VOLCANO", "CANYON", "ARCHIPELAGO",
                 "ISLAND", "SAVANNA", "TUNDRA", "RAINFOREST", "ATLANTIC", "HIMALAYA",
                 "DANUBE", "VICTORIA",
+                "ALPS", "ANDES", "GOBI", "TAHOE", "FUJI", "DENALI",
             ),
         ),
 
@@ -245,6 +258,7 @@ object CategoryCatalog {
                 "RAMEN", "RISOTTO", "BURRITO", "CHOCOLATE", "WAFFLE", "FALAFEL",
                 "GELATO", "TIRAMISU", "PANCAKE", "BAGEL", "DUMPLING", "PRETZEL",
                 "BARBECUE", "ESPRESSO",
+                "STEAK", "BREAD", "CHEESE", "CURRY", "SALAD", "SOUP",
             ),
         ),
 
@@ -260,6 +274,7 @@ object CategoryCatalog {
                 "LEDZEPPELIN", "AEROSMITH", "RADIOHEAD", "COLDPLAY", "BONJOVI",
                 "JOURNEY", "KISS", "RAMONES", "SLIPKNOT", "GENESIS", "DEFLEPPARD",
                 "SCORPIONS", "VANHALEN",
+                "WHO", "DOORS", "CLASH", "RUSH", "OASIS", "BLUR",
             ),
         ),
     )
@@ -302,9 +317,9 @@ object CategoryCatalog {
         val category = getCategoryById(categoryId) ?: allCategories.first()
 
         val (maxWordLength, wordCount) = when (difficulty.lowercase()) {
-            "easy" -> Pair(8, 5)
-            "hard" -> Pair(10, 8)
-            else -> Pair(9, 6) // Medium
+            "easy" -> Pair(8, 6)
+            "hard" -> Pair(10, 13)
+            else -> Pair(9, 8) // Medium
         }
 
         // Filter words that fit on the grid dimension

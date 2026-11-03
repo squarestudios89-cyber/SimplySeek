@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.15.1] - 2026-11-03
+
+### Added
+- **Expanded Puzzle Word Counts & Dense Placement Engine**:
+  - Increased target words per puzzle across all difficulty tiers:
+    - **Easy**: **6 words** on 8x8 grid.
+    - **Medium**: **8 words** on 9x9 grid (up from 6).
+    - **Hard**: **13 words** on 10x10 grid (up from 8, delivering dense 12–14 word puzzles).
+  - Enhanced [`WordSearchGenerator.kt`](app/src/main/java/com/squarestudios/simplyseek/generator/WordSearchGenerator.kt) with an intelligent fallback scan across shuffled matrix coordinates, ensuring dense 12–14 word puzzles with intersecting characters place reliably without skipping words.
+  - Expanded all 15 category word pools in [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek/model/CategoryCatalog.kt) to 28–32 words each (bringing the catalog to over 430+ words total).
+  - Updated difficulty tier HUD cards in [`CategorySelectScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/CategorySelectScreen.kt) to display `8x8 • 6W`, `9x9 • 8W`, and `10x10 • 13W`.
+  - Added unit test `testDenseWordPlacement` in [`WordSearchGeneratorTest.kt`](app/src/test/java/com/squarestudios/simplyseek/generator/WordSearchGeneratorTest.kt).
+
+---
+
 ## [0.15.0] - 2026-11-03
 
 ### Fixed

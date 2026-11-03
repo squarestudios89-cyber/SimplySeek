@@ -57,15 +57,15 @@ class CategoryCatalogTest {
     @Test
     fun testGetWordsForCategorySampleCounts() {
         val easyWords = CategoryCatalog.getWordsForCategory("computer_hardware", "Easy", seed = 1)
-        assertEquals(5, easyWords.size)
+        assertEquals(6, easyWords.size)
         assertTrue("Easy words must fit within 8x8 grid", easyWords.all { it.length <= 8 })
 
         val mediumWords = CategoryCatalog.getWordsForCategory("computer_hardware", "Medium", seed = 1)
-        assertEquals(6, mediumWords.size)
+        assertEquals(8, mediumWords.size)
         assertTrue("Medium words must fit within 9x9 grid", mediumWords.all { it.length <= 9 })
 
         val hardWords = CategoryCatalog.getWordsForCategory("computer_hardware", "Hard", seed = 1)
-        assertEquals(8, hardWords.size)
+        assertEquals(13, hardWords.size)
         assertTrue("Hard words must fit within 10x10 grid", hardWords.all { it.length <= 10 })
     }
 

@@ -171,9 +171,9 @@ fun CategorySelectScreen(
                 difficulties.forEach { diff ->
                     val isSelected = diff == selectedDifficulty
                     val sizeLabel = when (diff) {
-                        "Easy" -> "8x8 • 5W"
-                        "Hard" -> "10x10 • 8W"
-                        else -> "9x9 • 6W"
+                        "Easy" -> "8x8 • 6W"
+                        "Hard" -> "10x10 • 13W"
+                        else -> "9x9 • 8W"
                     }
 
                     Box(

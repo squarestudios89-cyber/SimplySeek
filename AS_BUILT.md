@@ -3,7 +3,7 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.15.0` (Build Version Code `1`)  
+> **Current Version:** `0.15.1` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
 > **Last Updated:** 2026-11-03  
 
@@ -334,3 +334,4 @@ com.squarestudios.simplyseek/
 | **v0.14.0**| 2026-11-03 | Live Home Dashboard with Operator Level, XP, Solved Count, and Daily Streak | `HomeScreen`, `StatsScreen`, `UserStatsRepository`, `GameBoardScreen`, `UserStatsRepositoryTest` |
 | **v0.14.1**| 2026-11-03 | Configured Kotlin KAPT annotation processor (`org.jetbrains.kotlin.kapt`) for Room compiler (`kapt(libs.room.compiler)`), resolving startup crash caused by missing `AppDatabase_Impl` | `build.gradle.kts`, `app/build.gradle.kts` |
 | **v0.15.0**| 2026-11-03 | Edge-to-edge system insets alignment, mobile grid tier resizing (8x8 Easy, 9x9 Medium, 10x10 Hard), boosted typography (0.58 ratio), and symmetric center-based touch snapping | `MainActivity`, `CategorySelectScreen`, `GameBoardScreen`, `HomeScreen`, `StatsScreen`, `WordSearchGrid`, `CategoryCatalog` |
+| **v0.15.1**| 2026-11-03 | Expanded target word density (6 Easy, 8 Medium, 13 Hard), dense placement fallback engine, and expanded word pools (430+ words) | `CategoryCatalog`, `WordSearchGenerator`, `CategorySelectScreen`, `CategoryCatalogTest`, `WordSearchGeneratorTest` |

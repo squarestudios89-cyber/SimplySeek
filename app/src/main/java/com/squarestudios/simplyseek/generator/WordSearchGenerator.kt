@@ -140,7 +140,9 @@ class WordSearchGenerator(
     ): Boolean {
         val directions = Direction.all()
 
-        repeat(maxAttempts) {
+        // 1. Fast random placement attempts
+        val fastAttempts = maxOf(maxAttempts, 200)
+        repeat(fastAttempts) {
             val direction = directions[random.nextInt(directions.size)]
             val startRow = random.nextInt(rows)
             val startCol = random.nextInt(cols)
@@ -150,6 +152,26 @@ class WordSearchGenerator(
                 return true
             }
         }
+
+        // 2. Systematic fallback scan across shuffled positions to guarantee placement when possible
+        val allPositions = mutableListOf<Pair<Int, Int>>()
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                allPositions.add(Pair(r, c))
+            }
+        }
+        allPositions.shuffle(random)
+        val shuffledDirections = directions.toList().shuffled(random)
+
+        for (pos in allPositions) {
+            for (dir in shuffledDirections) {
+                if (canPlaceWord(gridChars, rows, cols, word, pos.first, pos.second, dir)) {
+                    placeWord(gridChars, word, pos.first, pos.second, dir)
+                    return true
+                }
+            }
+        }
+
         return false
     }
 
