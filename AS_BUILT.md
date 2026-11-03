@@ -3,7 +3,7 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.17.0` (Build Version Code `1`)  
+> **Current Version:** `0.18.0` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
 > **Last Updated:** 2026-11-03  
 
@@ -144,9 +144,9 @@ The board supports multiple player-selectable visual presentation modes:
   - **Progress Bar**: `LinearProgressIndicator` dynamically reflects the ratio of found words.
   - **Puzzle Completion Card**: Triggers an animated celebration dialog offering one-tap `"PLAY NEXT PUZZLE"` generation.
 
-### 4.5. Endless Category & Fandom Catalog Architecture (`CategoryCatalog`) (v0.13.0, v0.16.0)
+### 4.5. Endless Category & Fandom Catalog Architecture (`CategoryCatalog`) (v0.13.0, v0.16.0, v0.18.0)
 Located in [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek/model/CategoryCatalog.kt):
-- **Expanded Category Catalog**: Organizes over **1,000+ curated, clean uppercase words** into **26 distinct playable categories** classified across 5 filter groups:
+- **Expanded Deep Category Catalog**: Organizes over **1,600+ curated, clean uppercase words** across **26 distinct playable categories** (each populated with **60–80 curated words**) classified across 5 filter groups:
   - **Movies & TV** (`CategoryGroup.MOVIES_TV`):
     - `harry_potter`: Harry Potter (50 words) — Hogwarts, Gryffindor, Slytherin, Ravenclaw, Hufflepuff, Dumbledore, Voldemort, Hermione, Ron, Quidditch, Snitch, Horcrux, Patronus, Hedwig, Hagrid, Azkaban, etc.
     - `big_bang_theory`: The Big Bang Theory (44 words) — Sheldon, Leonard, Penny, Howard, Raj, Amy, Bernadette, Bazinga, Caltech, Pasadena, String, Physics, Cheesecake, Comic, Klingon, etc.
@@ -180,7 +180,7 @@ Located in [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek
     - `world_wonders`: Everest, Amazon, Sahara, Nile, Colosseum, Pyramids, Volcano, Archipelago...
 - **Infinite Replayability Sampling & Sequential Indexing**:
   - `CategoryCatalog.getWordsForCategory(categoryId, difficulty, seed)` filters candidate words by grid length ($L \le 8$ for Easy, $L \le 9$ for Medium, $L \le 10$ for Hard) and shuffles with a deterministic seed.
-  - Deep pools of 35–50 words per fandom ensure millions of unique combinations per difficulty tier.
+  - Deep pools of 60–80 words per category ensure dozens of non-overlapping puzzles and millions of unique combinations per difficulty tier.
   - Clicking `"NEW PUZZLE"` or `"PLAY NEXT PUZZLE"` increments `puzzleSeed`, updating the header badge (`DIFFICULTY: ${difficulty.uppercase()} • PUZZLE #${puzzleSeed + 1}`) and regenerating an entirely distinct procedural layout.
 - **Topic Selection UI (`CategorySelectScreen`)**:
   - Filter group tabs (`ALL`, `TECH & GAMING`, `AUTOMOTIVE`, `POP CULTURE`, `MOVIES & TV`, `SCIENCE & NATURE`).
@@ -316,7 +316,7 @@ com.squarestudios.simplyseek/
 ├── logic/
 │   └── WordSearchSelectionManager.kt   # Ray-casting, coordinate math, and string verification
 ├── model/
-│   ├── CategoryCatalog.kt              # 26 topic categories and dynamic word bank sampling (1,000+ words)
+│   ├── CategoryCatalog.kt              # 26 topic categories and dynamic word bank sampling (1,600+ words)
 │   └── WordSearchModels.kt             # Core data classes (Cell, FoundWord, GridState)
 ├── navigation/
 │   ├── AppNavHost.kt                   # NavHost declaring routes and transitions
@@ -367,3 +367,4 @@ com.squarestudios.simplyseek/
 | **v0.15.1**| 2026-11-03 | Expanded target word density (6 Easy, 8 Medium, 13 Hard), dense placement fallback engine, and expanded word pools (430+ words) | `CategoryCatalog`, `WordSearchGenerator`, `CategorySelectScreen`, `CategoryCatalogTest`, `WordSearchGeneratorTest` |
 | **v0.16.0**| 2026-11-03 | Fandom and franchise catalog expansion (26 categories, 1,000+ words, Harry Potter, Big Bang Theory, MOVIES_TV group, sequential puzzle indexing) | `CategoryCatalog`, `GameBoardScreen`, `HomeScreen`, `CategoryCatalogTest` |
 | **v0.17.0**| 2026-11-03 | Tactile haptic feedback engine for tile circling, selection start, and word found confirmation | `GameHapticFeedback`, `WordSearchGrid`, `AndroidManifest.xml`, `GameHapticFeedbackTest` |
+| **v0.18.0**| 2026-11-03 | Massive word pool expansion across all 26 categories (1,600+ words, 60–80 words per category) | `CategoryCatalog`, `HomeScreen`, `CategoryCatalogTest` |

@@ -94,4 +94,33 @@ class CategoryCatalogTest {
         val wordsSeed2 = CategoryCatalog.getWordsForCategory("computer_hardware", "Medium", seed = 999)
         assertFalse("Different seeds should generally produce varied word sets", wordsSeed1A == wordsSeed2)
     }
+
+    @Test
+    fun testWordPoolDepthAndLengthLimits() {
+        val allCategories = CategoryCatalog.allCategories
+        val totalWords = allCategories.sumOf { it.wordPool.size }
+
+        assertTrue("Expected at least 1,500 total words across the catalog, found $totalWords", totalWords >= 1500)
+
+        for (category in allCategories) {
+            assertTrue(
+                "Category ${category.id} should have at least 50 words for deep replayability, found ${category.wordPool.size}",
+                category.wordPool.size >= 50,
+            )
+            for (word in category.wordPool) {
+                assertTrue(
+                    "Word '$word' in ${category.id} exceeds max phone grid length (10)",
+                    word.length <= 10,
+                )
+                assertTrue(
+                    "Word '$word' in ${category.id} must be at least 2 characters",
+                    word.length >= 2,
+                )
+                assertTrue(
+                    "Word '$word' in ${category.id} should only contain uppercase letters",
+                    word.all { it in 'A'..'Z' },
+                )
+            }
+        }
+    }
 }

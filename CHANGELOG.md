@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.18.0] - 2026-11-03
+
+### Added
+- **Massive Word Pool Expansion Across All Categories (1,600+ Curated Words)**:
+  - Substantially deepened word pools across all **26 categories** in [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek/model/CategoryCatalog.kt), increasing every category to **60–80 curated words each** (bringing total catalog capacity to over **1,600+ words**).
+  - Delivers extended gameplay longevity per topic: players can solve 10+ non-overlapping puzzles in any single category, with millions of unique procedural combinations across Easy, Medium, and Hard tiers.
+  - Verified that all words strictly contain uppercase alphabetic characters (`A`..`Z`) and comply with the $\le 10$ character limit for mobile screen grids.
+  - Updated home screen teaser badge in [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt) to `26 TOPICS & 1,600+ WORDS READY`.
+  - Added automated catalog audit test `testWordPoolDepthAndLengthLimits` in [`CategoryCatalogTest.kt`](app/src/test/java/com/squarestudios/simplyseek/model/CategoryCatalogTest.kt).
+
+---
+
 ## [0.17.0] - 2026-11-03
 
 ### Added
