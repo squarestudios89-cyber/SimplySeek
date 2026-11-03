@@ -148,7 +148,7 @@ fun GameBoardScreen(
                         color = TechButtonNeon,
                     )
                     Text(
-                        text = "DIFFICULTY: ${difficulty.uppercase()}",
+                        text = "DIFFICULTY: ${difficulty.uppercase()} • PUZZLE #${puzzleSeed + 1}",
                         fontSize = 12.sp,
                         color = TechTextCyan.copy(alpha = 0.7f),
                         fontFamily = FontFamily.Monospace,

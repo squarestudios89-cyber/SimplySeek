@@ -374,7 +374,7 @@ fun HomeScreen(
                 color = TechTextCyan.copy(alpha = 0.6f),
             )
             Text(
-                text = "15 TOPICS & 350+ WORDS READY",
+                text = "26 TOPICS & 1,000+ WORDS READY",
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily.Monospace,

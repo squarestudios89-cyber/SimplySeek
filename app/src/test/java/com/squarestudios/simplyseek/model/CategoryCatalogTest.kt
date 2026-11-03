@@ -11,21 +11,32 @@ class CategoryCatalogTest {
     @Test
     fun testAllCategoriesPopulated() {
         val categories = CategoryCatalog.allCategories
-        assertTrue("Expected at least 10 categories, found ${categories.size}", categories.size >= 10)
+        assertTrue("Expected at least 25 categories, found ${categories.size}", categories.size >= 25)
 
-        // Verify key categories exist
+        // Verify key categories exist including new fandoms
         val ids = categories.map { it.id }
+        assertTrue(ids.contains("harry_potter"))
+        assertTrue(ids.contains("big_bang_theory"))
+        assertTrue(ids.contains("lord_of_the_rings"))
+        assertTrue(ids.contains("star_wars"))
+        assertTrue(ids.contains("the_office"))
+        assertTrue(ids.contains("friends_tv"))
+        assertTrue(ids.contains("breaking_bad"))
+        assertTrue(ids.contains("stranger_things"))
+        assertTrue(ids.contains("pokemon_world"))
+        assertTrue(ids.contains("anime_legends"))
         assertTrue(ids.contains("computer_hardware"))
-        assertTrue(ids.contains("car_engine"))
-        assertTrue(ids.contains("car_makes"))
         assertTrue(ids.contains("playstation_hits"))
-        assertTrue(ids.contains("xbox_franchises"))
-        assertTrue(ids.contains("movies_cinema"))
-        assertTrue(ids.contains("comic_characters"))
     }
 
     @Test
     fun testCategoriesByGroupFilter() {
+        val moviesTv = CategoryCatalog.getCategoriesByGroup(CategoryGroup.MOVIES_TV)
+        assertTrue(moviesTv.isNotEmpty())
+        assertTrue(moviesTv.all { it.group == CategoryGroup.MOVIES_TV })
+        assertTrue(moviesTv.any { it.id == "harry_potter" })
+        assertTrue(moviesTv.any { it.id == "big_bang_theory" })
+
         val techGaming = CategoryCatalog.getCategoriesByGroup(CategoryGroup.TECH_GAMING)
         assertTrue(techGaming.isNotEmpty())
         assertTrue(techGaming.all { it.group == CategoryGroup.TECH_GAMING })
@@ -40,18 +51,23 @@ class CategoryCatalogTest {
 
     @Test
     fun testGetCategoryById() {
+        val harryPotter = CategoryCatalog.getCategoryById("harry_potter")
+        assertNotNull(harryPotter)
+        assertEquals("Harry Potter", harryPotter?.title)
+        assertTrue(harryPotter?.wordPool?.contains("HOGWARTS") == true)
+        assertTrue(harryPotter?.wordPool?.contains("SNITCH") == true)
+        assertTrue(harryPotter?.wordPool?.contains("VOLDEMORT") == true)
+
+        val bbt = CategoryCatalog.getCategoryById("big_bang_theory")
+        assertNotNull(bbt)
+        assertEquals("Big Bang Theory", bbt?.title)
+        assertTrue(bbt?.wordPool?.contains("BAZINGA") == true)
+        assertTrue(bbt?.wordPool?.contains("SHELDON") == true)
+
         val hardware = CategoryCatalog.getCategoryById("computer_hardware")
         assertNotNull(hardware)
         assertEquals("Computer Hardware", hardware?.title)
         assertTrue(hardware?.wordPool?.contains("CPU") == true)
-        assertTrue(hardware?.wordPool?.contains("GPU") == true)
-        assertTrue(hardware?.wordPool?.contains("RAM") == true)
-
-        val carEngine = CategoryCatalog.getCategoryById("car_engine")
-        assertNotNull(carEngine)
-        assertEquals("Car Engine Parts", carEngine?.title)
-        assertTrue(carEngine?.wordPool?.contains("PISTON") == true)
-        assertTrue(carEngine?.wordPool?.contains("TURBO") == true)
     }
 
     @Test

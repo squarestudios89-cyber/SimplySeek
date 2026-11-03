@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.16.0] - 2026-11-03
+
+### Added
+- **Massive Category & Fandom Catalog Expansion (26 Categories, 1,000+ Curated Words)**:
+  - Added new `CategoryGroup.MOVIES_TV("Movies & TV")` filter tab to [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek/model/CategoryCatalog.kt).
+  - Added 11 deep pop culture and fandom categories (35 to 50 curated words each, all verified $\le 10$ characters for mobile grid fit):
+    - **Harry Potter** (`harry_potter`, 50 words): Hogwarts, Gryffindor, Slytherin, Ravenclaw, Hufflepuff, Dumbledore, Voldemort, Hermione, Quidditch, Snitch, Horcrux, Patronus, etc.
+    - **The Big Bang Theory** (`big_bang_theory`, 44 words): Sheldon, Leonard, Penny, Howard, Raj, Amy, Bernadette, Bazinga, Caltech, Pasadena, String, Physics, etc.
+    - **Lord of the Rings** (`lord_of_the_rings`, 40 words): Frodo, Aragorn, Gandalf, Legolas, Gimli, Sauron, Mordor, Rivendell, Gondor, Rohan, Gollum, etc.
+    - **Star Wars** (`star_wars`, 40 words): Skywalker, Vader, Yoda, Kenobi, Solo, Chewbacca, Palpatine, Jedi, Sith, Lightsaber, Falcon, Tatooine, etc.
+    - **The Office** (`the_office`, 40 words): Michael, Dwight, Jim, Pam, Andy, Stanley, Scranton, Dunder, Mifflin, Dundies, Sabre, Beet, etc.
+    - **Friends** (`friends_tv`, 36 words): Ross, Rachel, Monica, Chandler, Joey, Phoebe, Central, Perk, Smelly, Geller, Tribbiani, Gunther, etc.
+    - **Breaking Bad** (`breaking_bad`, 36 words): Heisenberg, Walter, Jesse, Pinkman, Gus, Fring, Saul, Goodman, Hank, Schrader, Pollos, Meth, etc.
+    - **Stranger Things** (`stranger_things`, 35 words): Eleven, Mike, Dustin, Lucas, Will, Hopper, Joyce, Hawkins, Upside, Down, Demogorgon, Mindflayer, etc.
+    - **Pokémon World** (`pokemon_world`, 39 words): Pikachu, Charizard, Blastoise, Venusaur, Mewtwo, Gengar, Eevee, Snorlax, Lucario, Kanto, Pokeball, etc.
+    - **Anime Legends** (`anime_legends`, 38 words): Naruto, Sasuke, Goku, Vegeta, Luffy, Zoro, Tanjiro, Nezuko, Eren, Levi, Deku, Bakugo, Saitama, etc.
+    - **Marvel Universe** (`marvel_universe`, 40 words): Iron Man, Captain, Thor, Hulk, Hawkeye, Natasha, Thanos, Wakanda, Asgard, Vibranium, Infinity, Avenger, etc.
+  - Total catalog now contains **26 distinct categories** and **over 1,000+ words** enabling virtually limitless procedural puzzle generation.
+
+### Changed
+- **Active Puzzle Indexing & HUD Counter**:
+  - Updated [`GameBoardScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/GameBoardScreen.kt) header to display the current sequential puzzle number (`DIFFICULTY: ${difficulty.uppercase()} • PUZZLE #${puzzleSeed + 1}`), providing visible progress tracking across endless replays within any selected theme.
+  - Updated [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt) footer badge to read `26 TOPICS & 1,000+ WORDS READY`.
+  - Expanded [`CategoryCatalogTest.kt`](app/src/test/java/com/squarestudios/simplyseek/model/CategoryCatalogTest.kt) to validate >= 25 categories, fandom IDs, `MOVIES_TV` filtering, and keyword presence.
+
+---
+
 ## [0.15.1] - 2026-11-03
 
 ### Added

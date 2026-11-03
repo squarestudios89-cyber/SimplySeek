@@ -3,7 +3,7 @@
 > **Document Type:** As-Built Technical Specification  
 > **Application:** SimplySeek (Tech-Fluid Word Search)  
 > **Package Name:** `com.squarestudios.simplyseek`  
-> **Current Version:** `0.15.1` (Build Version Code `1`)  
+> **Current Version:** `0.16.0` (Build Version Code `1`)  
 > **Status:** Living Document (Working Reference)  
 > **Last Updated:** 2026-11-03  
 
@@ -144,35 +144,48 @@ The board supports multiple player-selectable visual presentation modes:
   - **Progress Bar**: `LinearProgressIndicator` dynamically reflects the ratio of found words.
   - **Puzzle Completion Card**: Triggers an animated celebration dialog offering one-tap `"PLAY NEXT PUZZLE"` generation.
 
-### 4.5. Endless Category & Word Bank Architecture (`CategoryCatalog`) (v0.13.0)
+### 4.5. Endless Category & Fandom Catalog Architecture (`CategoryCatalog`) (v0.13.0, v0.16.0)
 Located in [`CategoryCatalog.kt`](app/src/main/java/com/squarestudios/simplyseek/model/CategoryCatalog.kt):
-- **Category System**: Organizes over 350 curated, clean uppercase words into **15 distinct playable categories** classified under 4 intuitive filter groups:
+- **Expanded Category Catalog**: Organizes over **1,000+ curated, clean uppercase words** into **26 distinct playable categories** classified across 5 filter groups:
+  - **Movies & TV** (`CategoryGroup.MOVIES_TV`):
+    - `harry_potter`: Harry Potter (50 words) — Hogwarts, Gryffindor, Slytherin, Ravenclaw, Hufflepuff, Dumbledore, Voldemort, Hermione, Ron, Quidditch, Snitch, Horcrux, Patronus, Hedwig, Hagrid, Azkaban, etc.
+    - `big_bang_theory`: The Big Bang Theory (44 words) — Sheldon, Leonard, Penny, Howard, Raj, Amy, Bernadette, Bazinga, Caltech, Pasadena, String, Physics, Cheesecake, Comic, Klingon, etc.
+    - `lord_of_the_rings`: Lord of the Rings (40 words) — Frodo, Aragorn, Gandalf, Legolas, Gimli, Sauron, Mordor, Rivendell, Gondor, Rohan, Gollum, Ring, Shire, Nazgul, Mithril, etc.
+    - `star_wars`: Star Wars (40 words) — Skywalker, Vader, Yoda, Kenobi, Solo, Chewbacca, Palpatine, Jedi, Sith, Lightsaber, Falcon, Droid, Xwing, Tatooine, etc.
+    - `the_office`: The Office (40 words) — Michael, Dwight, Jim, Pam, Andy, Stanley, Angela, Scranton, Dunder, Mifflin, Dundies, Sabre, Beet, Prank, Threat, etc.
+    - `friends_tv`: Friends (36 words) — Ross, Rachel, Monica, Chandler, Joey, Phoebe, Central, Perk, Smelly, Geller, Tribbiani, Gunther, Lobster, Pivot, etc.
+    - `breaking_bad`: Breaking Bad (36 words) — Heisenberg, Walter, Jesse, Pinkman, Gus, Fring, Saul, Goodman, Hank, Schrader, Pollos, Hermanos, Meth, RV, etc.
+    - `stranger_things`: Stranger Things (35 words) — Eleven, Mike, Dustin, Lucas, Will, Hopper, Joyce, Hawkins, Upside, Down, Demogorgon, Mindflayer, Eggo, Arcade, etc.
   - **Tech & Gaming**:
     - `computer_hardware`: CPU, GPU, RAM, Motherboard, SSD, Heatsink, Cooler, Chipset, Optical, Transistor...
     - `software_coding`: Kotlin, Python, Compiler, Debugger, Coroutine, Recursion, Database, Algorithm...
     - `gaming_classics`: Mario, Zelda, Pokemon, Skyrim, Portal, Doom, Minecraft, Witcher, Fallout...
     - `playstation_hits`: God of War, Uncharted, Spiderman, Bloodborne, Horizon, Ratchet, Tsushima...
     - `xbox_franchises`: Halo, Forza, Gears, Fable, Starfield, Crackdown, Hellblade, Sea of Thieves...
-  - **Automotive**:
-    - `car_makes`: Ferrari, Porsche, Lamborghini, Toyota, BMW, Mercedes, Audi, McLaren, Bugatti...
-    - `car_engine`: Piston, Camshaft, Crankshaft, Cylinder, Turbo, Radiator, Alternator, Supercharger...
+    - `pokemon_world`: Pikachu, Charizard, Blastoise, Venusaur, Mewtwo, Gengar, Eevee, Snorlax, Lucario, Kanto, Johto, Pokeball, Gym...
   - **Pop Culture**:
+    - `marvel_universe`: Iron Man, Captain, Thor, Hulk, Hawkeye, Natasha, Thanos, Wakanda, Asgard, Vibranium, Infinity, Stones, Avenger...
+    - `anime_legends`: Naruto, Sasuke, Goku, Vegeta, Luffy, Zoro, Tanjiro, Nezuko, Eren, Levi, Deku, Bakugo, Saitama, Shinigami, Chakra...
     - `movies_cinema`: Inception, Matrix, Interstellar, Gladiator, Titanic, Terminator, Jurassic...
     - `comic_characters`: Batman, Superman, Spiderman, Wolverine, Deadpool, Thor, Daredevil, Joker...
     - `food_culinary`: Pizza, Sushi, Burger, Ramen, Croissant, Lasagna, Risotto, Tiramisu...
     - `music_rock`: Beatles, Queen, Nirvana, Metallica, Pink Floyd, Led Zeppelin, Radiohead...
+  - **Automotive**:
+    - `car_makes`: Ferrari, Porsche, Lamborghini, Toyota, BMW, Mercedes, Audi, McLaren, Bugatti...
+    - `car_engine`: Piston, Camshaft, Crankshaft, Cylinder, Turbo, Radiator, Alternator, Supercharger...
   - **Science & Nature**:
     - `science_physics`: Atom, Electron, Gravity, Quantum, Photon, Fusion, Relativity, Entropy...
     - `deep_space`: Galaxy, Nebula, Supernova, Black Hole, Asteroid, Andromeda, Pulsar, Cosmos...
     - `wild_animals`: Cheetah, Elephant, Kangaroo, Leopard, Falcon, Dolphin, Chameleon, Octopus...
     - `world_wonders`: Everest, Amazon, Sahara, Nile, Colosseum, Pyramids, Volcano, Archipelago...
-- **Infinite Replayability Sampling**:
-  - `CategoryCatalog.getWordsForCategory(categoryId, difficulty, seed)` filters candidate words by grid length ($L \le 8$ for Easy, $L \le 10$ for Medium, $L \le 12$ for Hard) and shuffles with a deterministic seed.
-  - Every click of `"NEW PUZZLE"` or `"PLAY NEXT PUZZLE"` increments the seed, sampling an entirely different combination of words and regenerating a unique procedural grid layout.
+- **Infinite Replayability Sampling & Sequential Indexing**:
+  - `CategoryCatalog.getWordsForCategory(categoryId, difficulty, seed)` filters candidate words by grid length ($L \le 8$ for Easy, $L \le 9$ for Medium, $L \le 10$ for Hard) and shuffles with a deterministic seed.
+  - Deep pools of 35–50 words per fandom ensure millions of unique combinations per difficulty tier.
+  - Clicking `"NEW PUZZLE"` or `"PLAY NEXT PUZZLE"` increments `puzzleSeed`, updating the header badge (`DIFFICULTY: ${difficulty.uppercase()} • PUZZLE #${puzzleSeed + 1}`) and regenerating an entirely distinct procedural layout.
 - **Topic Selection UI (`CategorySelectScreen`)**:
-  - Filter group tabs (`ALL`, `TECH & GAMING`, `AUTOMOTIVE`, `POP CULTURE`, `SCIENCE & NATURE`).
+  - Filter group tabs (`ALL`, `TECH & GAMING`, `AUTOMOTIVE`, `POP CULTURE`, `MOVIES & TV`, `SCIENCE & NATURE`).
   - Interactive cards featuring category icons, titles, word counts, and sample words.
-  - Tiered difficulty selection with grid size dimensions (`8x8`, `10x10`, `12x12`).
+  - Tiered difficulty selection with grid size dimensions (`8x8 • 6W`, `9x9 • 8W`, `10x10 • 13W`).
 
 ### 4.6. Home Dashboard & User Progression Engine (`HomeScreen` & `UserStatsRepository`) (v0.14.0)
 Located in [`HomeScreen.kt`](app/src/main/java/com/squarestudios/simplyseek/ui/screens/HomeScreen.kt) and [`UserStatsRepository.kt`](app/src/main/java/com/squarestudios/simplyseek/db/repository/UserStatsRepository.kt):
@@ -289,7 +302,7 @@ com.squarestudios.simplyseek/
 ├── logic/
 │   └── WordSearchSelectionManager.kt   # Ray-casting, coordinate math, and string verification
 ├── model/
-│   ├── CategoryCatalog.kt              # 15 topic categories and dynamic word bank sampling
+│   ├── CategoryCatalog.kt              # 26 topic categories and dynamic word bank sampling (1,000+ words)
 │   └── WordSearchModels.kt             # Core data classes (Cell, FoundWord, GridState)
 ├── navigation/
 │   ├── AppNavHost.kt                   # NavHost declaring routes and transitions
@@ -335,3 +348,4 @@ com.squarestudios.simplyseek/
 | **v0.14.1**| 2026-11-03 | Configured Kotlin KAPT annotation processor (`org.jetbrains.kotlin.kapt`) for Room compiler (`kapt(libs.room.compiler)`), resolving startup crash caused by missing `AppDatabase_Impl` | `build.gradle.kts`, `app/build.gradle.kts` |
 | **v0.15.0**| 2026-11-03 | Edge-to-edge system insets alignment, mobile grid tier resizing (8x8 Easy, 9x9 Medium, 10x10 Hard), boosted typography (0.58 ratio), and symmetric center-based touch snapping | `MainActivity`, `CategorySelectScreen`, `GameBoardScreen`, `HomeScreen`, `StatsScreen`, `WordSearchGrid`, `CategoryCatalog` |
 | **v0.15.1**| 2026-11-03 | Expanded target word density (6 Easy, 8 Medium, 13 Hard), dense placement fallback engine, and expanded word pools (430+ words) | `CategoryCatalog`, `WordSearchGenerator`, `CategorySelectScreen`, `CategoryCatalogTest`, `WordSearchGeneratorTest` |
+| **v0.16.0**| 2026-11-03 | Fandom and franchise catalog expansion (26 categories, 1,000+ words, Harry Potter, Big Bang Theory, MOVIES_TV group, sequential puzzle indexing) | `CategoryCatalog`, `GameBoardScreen`, `HomeScreen`, `CategoryCatalogTest` |
